@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FGF TechCare — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #5cb85c;
+    --green-dark: #3d8f39;
+    --green-light: #e8f5e9;
+    --green-mid: #a5d6a7;
+    --bg: #f2f4f3;
+    --white: #ffffff;
+    --ink: #1a1f1a;
+    --muted: #6b7280;
+    --border: #dde3dd;
+    --card-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    --card-hover: 0 8px 32px rgba(92,184,92,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  /* ---- SIDEBAR ---- */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 220px;
+    height: 100vh;
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    padding: 0 0 24px;
+  }
+
+  .sidebar-brand {
+    padding: 28px 24px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .brand-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--green);
+    letter-spacing: 3px;
+    line-height: 1;
+  }
+
+  .brand-sub {
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    padding: 14px 12px 6px;
+    font-weight: 600;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+  .nav-item.active { background: rgba(92,184,92,0.15); color: var(--green); }
+  .nav-item svg { flex-shrink: 0; opacity: 0.7; }
+  .nav-item.active svg { opacity: 1; }
+
+  .sidebar-footer {
+    padding: 0 12px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 16px;
+    margin: 0 12px;
+  }
+
+  .agent-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .agent-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .agent-info { min-width: 0; }
+  .agent-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agent-role { font-size: 10px; color: rgba(255,255,255,0.3); }
+
+  /* ---- MAIN CONTENT ---- */
+  .main {
+    margin-left: 220px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- TOPBAR ---- */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 36px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .topbar-date {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 3px rgba(92,184,92,0.2);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(92,184,92,0.2); }
+    50% { box-shadow: 0 0 0 6px rgba(92,184,92,0.08); }
+  }
+
+  /* ---- PAGE BODY ---- */
+  .content {
+    flex: 1;
+    padding: 36px 36px 60px;
+  }
+
+  /* ---- GREETING ---- */
+  .greeting-block {
+    margin-bottom: 32px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .greeting-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+
+  .greeting-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+
+  .greeting-sub {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* ---- STATS STRIP ---- */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .stat-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .stat-icon svg { color: var(--green-dark); }
+
+  .stat-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .stat-lbl {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  /* ---- SECTION HEADER ---- */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .section-divider {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ---- FORM CARDS ---- */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  .form-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+    cursor: pointer;
+    box-shadow: var(--card-shadow);
+  }
+
+  .form-card:hover {
+    box-shadow: var(--card-hover);
+    transform: translateY(-3px);
+    border-color: var(--green-mid);
+  }
+
+  .card-accent {
+    height: 5px;
+    background: linear-gradient(90deg, var(--green), var(--green-dark));
+  }
+
+  .card-accent.blue {
+    background: linear-gradient(90deg, #42a5f5, #1565c0);
+  }
+
+  .card-body {
+    padding: 22px 22px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .card-icon.blue-bg { background: #e3f2fd; }
+
+  .card-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: var(--green-light);
+    color: var(--green-dark);
+  }
+
+  .card-badge.blue-badge { background: #e3f2fd; color: #1565c0; }
+
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .card-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .card-footer {
+    border-top: 1px solid var(--border);
+    padding: 13px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fafafa;
+  }
+
+  .card-meta {
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .card-action {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green-dark);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: gap 0.18s ease;
+  }
+
+  .form-card:hover .card-action { gap: 8px; }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---- MOBILE ---- */
+  @media (max-width: 700px) {
+    .sidebar { width: 100%; height: 56px; flex-direction: row; align-items: center; padding: 0 20px; }
+    .sidebar-brand { padding: 0; border: none; }
+    .brand-sub, .sidebar-nav, .sidebar-footer { display: none; }
+    .main { margin-left: 0; padding-top: 56px; }
+    .topbar { padding: 0 20px; }
+    .content { padding: 24px 20px 48px; }
+    .stats-strip { grid-template-columns: 1fr; gap: 10px; }
+    .greeting-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">FGF</div>
+    <div class="brand-sub">TechCare Portal</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Menu</div>
+    <a class="nav-item active" href="#">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="phone-contract">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      Phone Contract
+    </a>
+    <a class="nav-item" href="laptop-contract">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Laptop Policy
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="agent-badge">
+      <div class="agent-avatar" id="avatar-initials">?</div>
+      <div class="agent-info">
+        <div class="agent-name" id="sidebar-agent-name">Loading…</div>
+        <div class="agent-role">TechCare Agent</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <span class="topbar-title">IT Forms Dashboard</span>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbar-date"></span>
+      <div class="status-dot" title="System Online"></div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- GREETING -->
+    <div class="greeting-block">
+      <div class="greeting-eyebrow">Welcome back</div>
+      <div class="greeting-title" id="greeting-name">Hello, Agent 👋</div>
+      <div class="greeting-sub">Select a form below to get started.</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div>
+          <div class="stat-val">2</div>
+          <div class="stat-lbl">Available Forms</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div class="stat-val" id="stat-saved">—</div>
+          <div class="stat-lbl">PDFs Saved Today</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <div class="stat-val" id="stat-time">—</div>
+          <div class="stat-lbl">Current Time</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMS -->
+    <div class="section-header">
+      <span class="section-title">FORMS</span>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- Phone Contract -->
+      <a class="form-card" href="phone-contract">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-icon-row">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3d8f39" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <span class="card-badge">Contract</span>
+          </div>
+          <div class="card-title">Phone Contract</div>
+          <div class="card-desc">Issue a mobile device contract to a team member. Captures phone model, plan details, and team member acknowledgement signature.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Generates PDF
+          </span>
+          <span class="card-action">
+            Open form
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- Laptop Policy -->
+      <a class="form-card" href="/laptop-contract">
+        <div class="card-accent blue"></div>
+        <div class="card-body">
+          <div class="card-icon-row">
+            <div class="card-icon blue-bg">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1565c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </div>
+            <span class="card-badge blue-badge">Policy</span>
+          </div>
+          <div class="card-title">Laptop Use Policy</div>
+          <div class="card-desc">IT-005 Company Laptop Use Policy acknowledgement. Records device details, serial number, and captures team member signature.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-meta">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Generates PDF
+          </span>
+          <span class="card-action" style="color:#1565c0;">
+            Open form
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ---- Agent name from cookie ---- */
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  const agentName = getCookie('agent_name') || 'Agent';
+  const firstName = agentName.split(' ')[0];
+  const initials  = agentName.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+
+  document.getElementById('greeting-name').textContent  = 'Hello, ' + firstName + ' 👋';
+  document.getElementById('sidebar-agent-name').textContent = agentName;
+  document.getElementById('avatar-initials').textContent   = initials;
+
+  /* ---- Date / time ---- */
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('topbar-date').textContent = now.toLocaleDateString('en-CA', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+    document.getElementById('stat-time').textContent   = now.toLocaleTimeString('en-CA', { hour:'2-digit', minute:'2-digit' });
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  /* ---- PDFs saved today (session count) ---- */
+  document.getElementById('stat-saved').textContent = '0';
+</script>
+</body>
+</html>

@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Company Phone Use Policy — FGF Brands Inc.</title>
+<style>
+  /* ===================== BASE RESET ===================== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ===================== SCREEN STYLES ===================== */
+  @media screen {
+    body {
+      background: #c8c8c8;
+      font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+      font-size: 11pt;
+      color: #000;
+      padding: 20px 12px 100px;
+    }
+
+    .page {
+      background: #fff;
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto 24px;
+      padding: 28px 24px 40px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Sticky save button */
+    .save-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #fff;
+      border-top: 2px solid #5cb85c;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
+    }
+
+    .btn-save {
+      background: #5cb85c;
+      color: #fff;
+      border: none;
+      padding: 13px 48px;
+      font-size: 14px;
+      font-family: Calibri, Arial, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 400px;
+      justify-content: center;
+    }
+
+    .btn-save:hover { background: #4aa044; }
+    .btn-save:active { background: #3d8f39; }
+
+    /* Validation toast */
+    .toast {
+      position: fixed;
+      top: 16px; left: 50%; transform: translateX(-50%) translateY(-80px);
+      background: #c0392b;
+      color: #fff;
+      padding: 11px 22px;
+      font-size: 13px;
+      font-family: Calibri, Arial, sans-serif;
+      border-radius: 2px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
+      white-space: nowrap;
+      z-index: 2000;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #2e7d32; }
+  }
+
+  /* ===================== SHARED (screen + print) ===================== */
+
+  .doc-header {
+    display: flex;
+    border: 1px solid #aaa;
+    margin-bottom: 20px;
+  }
+
+  .header-logo {
+    background: #5cb85c;
+    width: 110px;
+    min-height: 118px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-logo::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    border-style: solid;
+    border-width: 0 0 26px 26px;
+    border-color: transparent transparent #fff transparent;
+  }
+
+  .fgf-text {
+    font-family: Arial Black, Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .header-info {
+    flex: 1;
+    border-left: 1px solid #aaa;
+    min-width: 0;
+  }
+
+  .header-title {
+    font-size: 13pt;
+    font-weight: bold;
+    padding: 6px 10px 5px;
+    border-bottom: 1px solid #aaa;
+  }
+
+  .header-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .header-table td {
+    padding: 2px 10px;
+    font-size: 9.5pt;
+    border-bottom: 1px solid #aaa;
+    vertical-align: top;
+  }
+
+  .header-table tr:last-child td { border-bottom: none; }
+  .header-table td:first-child { width: 110px; color: #444; white-space: nowrap; }
+
+  .section-heading {
+    font-size: 11pt;
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 5px;
+  }
+
+  .sub-heading {
+    font-size: 11pt;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 3px;
+  }
+
+  .body-text {
+    font-size: 10.5pt;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px 0;
+  }
+
+  .bullet-list li {
+    padding-left: 14px;
+    position: relative;
+    font-size: 10.5pt;
+    line-height: 1.5;
+    margin-bottom: 2px;
+  }
+
+  .bullet-list li::before {
+    content: '\2022';
+    position: absolute;
+    left: 2px;
+  }
+
+  .disc-list {
+    list-style: disc;
+    margin-left: 40px;
+    margin-bottom: 8px;
+  }
+
+  .disc-list li {
+    font-size: 10.5pt;
+    line-height: 1.55;
+    margin-bottom: 5px;
+    padding-left: 3px;
+  }
+
+  .num-para {
+    font-size: 10.5pt;
+    line-height: 1.5;
+    margin-bottom: 5px;
+  }
+
+  .ack-title {
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: underline;
+    margin: 16px 0 16px;
+  }
+
+  .ack-text {
+    font-size: 10.5pt;
+    margin-bottom: 18px;
+  }
+
+  .field-row {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 2px 0;
+  }
+
+  .field-label {
+    font-size: 10.5pt;
+    font-weight: bold;
+    min-width: 210px;
+    flex-shrink: 0;
+  }
+
+  .field-input {
+    flex: 1;
+    min-width: 120px;
+    border: none;
+    border-bottom: 1.5px solid #000;
+    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+    font-size: 10.5pt;
+    padding: 2px 4px;
+    outline: none;
+    background: transparent;
+  }
+
+  @media screen {
+    .field-input:focus { background: #eef5ff; }
+  }
+
+  .field-static {
+    font-size: 10.5pt;
+    font-weight: bold;
+  }
+
+  /* ---- Inline signature (desktop) ---- */
+  .sig-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0 8px;
+  }
+
+  .sig-canvas-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  #sig-canvas {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    height: 80px;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  .sig-line {
+    border-top: 1.5px solid #000;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .sig-label {
+    font-size: 10.5pt;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .sig-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9.5pt;
+    color: #bbb;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .sig-clear {
+    font-size: 9pt;
+    color: #555;
+    border: 1px solid #ccc;
+    background: #f6f6f6;
+    padding: 4px 14px;
+    cursor: pointer;
+    margin-top: 6px;
+    font-family: Calibri, Arial, sans-serif;
+    border-radius: 2px;
+  }
+
+  @media screen { .sig-clear:hover { background: #e8e8e8; } }
+
+  /* ---- Mobile sig trigger area ---- */
+  .sig-mobile-trigger {
+    display: none; /* shown only on mobile via JS */
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0 8px;
+    width: 100%;
+  }
+
+  .sig-preview-area {
+    width: 100%;
+    max-width: 320px;
+    height: 80px;
+    border: 1.5px dashed #aaa;
+    border-radius: 4px;
+    position: relative;
+    background: #fafafa;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .sig-preview-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+  }
+
+  .sig-preview-area .sig-preview-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #999;
+    font-size: 9.5pt;
+    pointer-events: none;
+  }
+
+  .sig-preview-area .sig-preview-hint svg {
+    opacity: 0.4;
+  }
+
+  .sig-preview-area.has-sig {
+    border-color: #5cb85c;
+    background: #fff;
+  }
+
+  .sig-preview-area.has-sig .sig-preview-hint {
+    display: none;
+  }
+
+  .sig-preview-area.has-sig img {
+    display: block;
+  }
+
+  /* ===================== MOBILE SIGNATURE MODAL ===================== */
+  #sig-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #1a1a1a;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #sig-modal.open {
+    display: flex;
+  }
+
+  /* Modal inner always fills the overlay */
+  .sig-modal-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sig-modal-header {
+    background: #2d2d2d;
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .sig-modal-header span {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 13pt;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+  }
+
+  .sig-modal-header .modal-brand {
+    font-family: Arial Black, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    color: #5cb85c;
+    letter-spacing: 2px;
+  }
+
+  .sig-modal-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    position: relative;
+  }
+
+  .sig-modal-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  #sig-modal-canvas {
+    display: block;
+    width: 100%;
+    height: 180px;
+    cursor: crosshair;
+    touch-action: none;
+    /* Size is set explicitly in JS to match these exact px values */
+  }
+
+  .sig-modal-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 10pt;
+    font-family: Calibri, Arial, sans-serif;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .sig-modal-line-label {
+    width: 100%;
+    border-top: 1.5px solid #555;
+    margin-top: 4px;
+    text-align: center;
+    padding-top: 4px;
+    color: #bbb;
+    font-size: 9pt;
+    font-family: Calibri, Arial, sans-serif;
+  }
+
+  .sig-modal-footer {
+    background: #2d2d2d;
+    display: flex;
+    gap: 10px;
+    padding: 10px 16px;
+    flex-shrink: 0;
+  }
+
+  .sig-modal-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 3px;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 13pt;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+  }
+
+  .sig-modal-btn.cancel {
+    background: #444;
+    color: #ccc;
+  }
+
+  .sig-modal-btn.clear {
+    background: #555;
+    color: #fff;
+    flex: 0 0 80px;
+  }
+
+  .sig-modal-btn.confirm {
+    background: #5cb85c;
+    color: #fff;
+  }
+
+  .sig-modal-btn.confirm:active { background: #4aa044; }
+  .sig-modal-btn.cancel:active { background: #333; }
+
+  .replacements-title {
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0 5px;
+  }
+
+  .replacements-sub {
+    font-size: 10.5pt;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* ===================== PRINT STYLES ===================== */
+  @media print {
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      font-family: Calibri, Arial, sans-serif;
+      font-size: 10pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      color-adjust: exact;
+    }
+
+    .save-bar, .sig-clear, .toast, #sig-modal,
+    .sig-mobile-trigger button, .sig-preview-area .sig-preview-hint { display: none !important; }
+
+    .page {
+      max-width: 100%;
+      width: 100%;
+      padding: 14mm 18mm 14mm;
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+    }
+
+    .page:last-of-type { page-break-after: auto; }
+
+    .header-logo {
+      background-color: #5cb85c !important;
+      width: 100px;
+      min-height: 108px;
+    }
+
+    .field-input {
+      border-bottom: 1px solid #000 !important;
+    }
+
+    #sig-canvas {
+      max-width: 280px;
+    }
+  }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media screen and (max-width: 480px) {
+    .header-logo { width: 80px; min-height: 100px; }
+    .fgf-text { font-size: 24px; }
+    .header-title { font-size: 11pt; }
+    .header-table td { font-size: 8.5pt; padding: 2px 6px; }
+    .header-table td:first-child { width: 88px; }
+    .field-label { min-width: 160px; font-size: 10pt; }
+    .section-heading, .sub-heading { font-size: 10.5pt; }
+    .body-text, .bullet-list li, .disc-list li, .num-para { font-size: 10pt; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+  <div class="doc-header">
+    <div class="header-logo"><div class="fgf-text">FGF</div></div>
+    <div class="header-info">
+      <div class="header-title">Company Phone Use Policy</div>
+      <table class="header-table">
+        <tr><td>Issue date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Revision date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Issued by:</td><td>I.T. Department</td></tr>
+        <tr><td>Approved by:</td><td>Management</td></tr>
+        <tr><td>Document:</td><td>IT-006</td></tr>
+        <tr><td>Version:</td><td>2025-01</td></tr>
+        <tr><td>Page</td><td><strong>1 of 4</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <p class="section-heading">DEFINITION:</p>
+  <p class="body-text">References to cell phones include cell phones or wireless Personal Digital Assistants (PDA) such as a Smartphone, Blackberry etc. that have a cell phone feature.</p>
+
+  <p class="section-heading">PURPOSE:</p>
+  <p class="body-text">The purpose of the <strong>Cellular Telephone Use Policy</strong> is:</p>
+  <ul class="bullet-list">
+    <li>To provide standards and clarification for cell phone use.</li>
+    <li>To ensure safe work practices when considering the need to use a cell phone while driving or while performing other duties.</li>
+    <li>For team members using cell phones to make cost effective decisions regarding cell phone use and plan.</li>
+  </ul>
+
+  <p class="section-heading">SCOPE:</p>
+  <p class="body-text">This policy applies to all <strong>FGF Brands Inc.</strong> team members who use cellular phones for the business.</p>
+
+  <p class="section-heading">POLICY:</p>
+  <p class="sub-heading">A. Cell Phone Use when a team member's phone is issued for business.</p>
+  <p class="body-text">FGF Brands Inc. policy is taken directly from the Ontario Government Standards and Practices Commission (OGSPC) Advisory: The employer may allow team members to use the cellular telephones to talk to family members, make medical appointments, schedule service technicians, and confer with a child's school And take care of any of a variety of other matters which can only be accomplished during regular working hours without such usage being prohibited by law. In this situation, it would be less disruptive to permit team members to make such personal calls from the cellular telephones than to require a team member to take a break or leave from work to take care of personal matters. Personal telephone calls made during working hours from public employers' telephones should be <strong>brief</strong> and <strong>infrequent</strong>. Personal long-distance calls, even if the team member reimburses the company for the cost of such calls, may not be made on company telephones. If the company chooses a cellular telephone plan that includes long distance telephone calls at no extra charge the team members would be prohibited from using this service for personal calls. If the team member used this service, the team member would be receiving a financial gain or avoiding a financial detriment and would be in violation of the policy and the overcharge amount will be recovered through payroll for the same.</p>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+  <div class="doc-header">
+    <div class="header-logo"><div class="fgf-text">FGF</div></div>
+    <div class="header-info">
+      <div class="header-title">Company Phone Use Policy</div>
+      <table class="header-table">
+        <tr><td>Issue date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Revision date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Issued by:</td><td>I.T. Department</td></tr>
+        <tr><td>Approved by:</td><td>Management</td></tr>
+        <tr><td>Document:</td><td>IT-006</td></tr>
+        <tr><td>Version:</td><td>2025-01</td></tr>
+        <tr><td>Page</td><td><strong>2 of 4</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <p class="sub-heading">B. Cellular phone use in vehicles, at work sites, or while operating equipment</p>
+  <p class="body-text">Currently provincial law prohibits the use of handheld cellular phones while driving except when they are being used with a hands-free accessory. The Ontario State Driving Policy only allows the use of a hands-free cellular phone while driving. Supervisors will have the authority to restrict or prohibit use of cellular phones at any time on the job when they consider such situations and use may present a safety hazard to the team member, co-worker, contractors, and/or to the general public and private property. Sending and/or reading text messages are prohibited while operating any vehicle.</p>
+
+  <p class="sub-heading">C. Termination</p>
+  <p class="body-text">When your employment with FGF Brands is terminated whether initiated by yourself or the company, you agree that the company reserves the right to delete all company or personal data with no obligation to provide you with a copy of your personal data and you waive your right to redress by the company for the same. Similarly, if you have ported your personal number to the company account with the company cell phone service provider, you have also waived your right to reclaim it back.</p>
+
+  <p class="sub-heading">Work Sites</p>
+  <p class="body-text">DO NOT engage in the use of a cellular phone while at any work site during which the operation of a cellular phone will be a distraction to the user and/or may create an unsafe work environment. Such work sites include but are not limited to: Operating lifts, skyjacks, maintenance and construction, operating or repairing energized equipment such as electrical panels, motors, or energized circuits. Such work sites must be secured or the cell phone used only by a team member while out of harm's way of such work environments.</p>
+
+  <p class="section-heading">GUIDELINES FOR USE OF CELLULAR PHONES:</p>
+  <p class="body-text">Cellular phones are a tool to enhance team member productivity and provide a higher level of service to our customers. Cellular phone service is also more expensive than landline phones because of the airtime costs associated with cellular phone usage. Therefore, we ask that team members follow the guidelines below to help keep costs to a minimum.</p>
+  <p class="num-para"><strong>1.</strong> Do not use your cellular phone to make a call if regular phone service is available. There is no charge for a local call made from a regular phone while local calls made or received on a cellular phone incur charges.</p>
+  <p class="num-para"><strong>2.</strong> Avoid lengthy conversations on cellular phones. If you anticipate a call lasting more than a few minutes, try and arrange to call the person back from a regular phone.</p>
+  <p class="num-para"><strong>3.</strong> Calls made to Long Distance numbers after the allotted number of minutes, the team member shall be liable for the costs involved. And this will be deducted from the team member's pay.</p>
+  <p class="num-para"><strong>4.</strong> Team members in possession of Company supplied cell phones are expected to protect the equipment from loss, damage, or theft.</p>
+  <p class="num-para"><strong>5.</strong> Team members should avoid illegal, disruptive messages and non-productive use of the cell phones.</p>
+  <p class="num-para"><strong>6.</strong>&nbsp; The Company prohibits the use of cell phones by team members while operating forklifts or other equipment. The prohibition includes receiving or placing calls/text messages/emails.</p>
+  <p class="num-para"><strong>7.</strong> All communications using cell phones – must meet professional standards of conduct.</p>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page">
+  <div class="doc-header">
+    <div class="header-logo"><div class="fgf-text">FGF</div></div>
+    <div class="header-info">
+      <div class="header-title">Company Phone Use Policy</div>
+      <table class="header-table">
+        <tr><td>Issue date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Revision date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Issued by:</td><td>I.T. Department</td></tr>
+        <tr><td>Approved by:</td><td>Management</td></tr>
+        <tr><td>Document:</td><td>IT-006</td></tr>
+        <tr><td>Version:</td><td>2025-01</td></tr>
+        <tr><td>Page</td><td><strong>3 of 4</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <p class="num-para"><strong>8.</strong>&nbsp; The Team member is responsible for safe keeping and for the daily charging of the battery to get optimal usage out of the cell phones.</p>
+  <p class="num-para"><strong>9.</strong>&nbsp; A team member will be responsible for the activity on the company supplied line/cell phone assigned to him/her. If the cell phone is lost or misplaced, please contact <a href="/cdn-cgi/l/email-protection#b0c4d5d3d8d3d1c2d5f0d6d7d6d2c2d1ded4c39ed3dfdd"><span class="__cf_email__" data-cfemail="bfcbdadcd7dcdecddaffd9d8d9ddcdded1dbcc91dcd0d2">[email&#160;protected]</span></a> immediately. There will be a replacement cost of <strong>$300.00 for cell phone</strong> that will be recovered through payroll for any damage, the phone be lost or stolen, or the cell phone not returned upon termination of services.</p>
+
+  <br>
+  <p class="sub-heading">Included in your plan (CANADA)</p>
+  <br>
+  <ul class="disc-list">
+    <li>Unlimited calling and SMS in Canada</li>
+    <li>Unlimited calling to US and SMS from Canada</li>
+    <li>International SMS <strong>Incoming</strong> Unlimited included</li>
+    <li>3 GB Data Plan in Canada only</li>
+  </ul>
+
+  <br>
+  <p class="sub-heading">US Travel outside Canada</p>
+  <ul class="disc-list">
+    <li>User must arrange travel plans with IT with minimum 3 days of notice prior to the commencement of your trip.</li>
+    <li>Users must keep the Data while Roaming option always set to 'Off' while travelling unless you have made a <strong><em>Harmony</em></strong> ticket request with IT for travel and have IT confirmation to do so.</li>
+    <li>All charges that are incurred while travelling are otherwise to be reimbursed to the company, if incurred.</li>
+  </ul>
+
+  <br><br><br><br>
+  <p class="ack-title">ACKNOWLEDGEMENT:</p>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page">
+  <div class="doc-header">
+    <div class="header-logo"><div class="fgf-text">FGF</div></div>
+    <div class="header-info">
+      <div class="header-title">Company Phone Use Policy</div>
+      <table class="header-table">
+        <tr><td>Issue date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Revision date:</td><td>May 22, 2025</td></tr>
+        <tr><td>Issued by:</td><td>I.T. Department</td></tr>
+        <tr><td>Approved by:</td><td>Management</td></tr>
+        <tr><td>Document:</td><td>IT-006</td></tr>
+        <tr><td>Version:</td><td>2025-01</td></tr>
+        <tr><td>Page</td><td><strong>4 of 4</strong></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <p class="ack-text">I ACKNOWLEDGE that I have REVIEWED and READ the above Cellular Phone Policy.</p>
+
+  <div class="field-row">
+    <span class="field-label">CARRIER:</span>
+    <span class="field-static">Bell</span>
+  </div>
+  <div class="field-row">
+    <span class="field-label">TEAM MEMBER NAME:</span>
+    <input class="field-input" type="text" id="f-name" autocomplete="name" placeholder=" ">
+  </div>
+  <div class="field-row">
+    <span class="field-label">TEAM MEMBER USERNAME:</span>
+    <input class="field-input" type="text" id="f-username" placeholder=" ">
+  </div>
+  <div class="field-row">
+    <span class="field-label">PHONE BRAND:</span>
+    <span class="field-static">Samsung</span>
+  </div>
+  <div class="field-row">
+    <span class="field-label">PHONE MODEL:</span>
+    <input class="field-input" type="text" id="f-model" placeholder=" ">
+  </div>
+  <div class="field-row">
+    <span class="field-label">PHONE NUMBER:</span>
+    <input class="field-input" type="tel" id="f-phone" placeholder=" ">
+  </div>
+  <div class="field-row">
+    <span class="field-label">IMEI NUMBER:</span>
+    <input class="field-input" type="text" id="f-imei" placeholder=" ">
+  </div>
+  <div class="field-row">
+    <span class="field-label">DATE:</span>
+    <input class="field-input" type="date" id="f-date">
+  </div>
+  <div class="field-row">
+    <span class="field-label">TECHCARE AGENT NAME:</span>
+    <span class="field-static" id="agent-name"></span>
+  </div>
+
+  <!-- DESKTOP: inline signature canvas -->
+  <div class="sig-wrapper" id="sig-desktop">
+    <div class="sig-canvas-container">
+      <canvas id="sig-canvas"></canvas>
+      <div class="sig-line"></div>
+      <span class="sig-hint" id="sig-hint">Draw your signature here</span>
+    </div>
+    <p class="sig-label">(Team Member Signature)</p>
+    <button class="sig-clear" id="btn-clear">Clear Signature</button>
+  </div>
+
+  <!-- MOBILE: tap-to-open trigger -->
+  <div class="sig-mobile-trigger" id="sig-mobile">
+    <p class="sig-label" style="margin-bottom:8px; font-weight:bold;">(Team Member Signature)</p>
+    <div class="sig-preview-area" id="sig-preview" onclick="openSigModal()">
+      <div class="sig-preview-hint">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+        Tap to sign
+      </div>
+      <img id="sig-preview-img" src="" alt="signature">
+    </div>
+    <button class="sig-clear" id="btn-clear-mobile" style="margin-top:8px;" onclick="clearMobileSig()">Clear Signature</button>
+  </div>
+
+  <p class="replacements-title">ONLY APPLICABLE FOR REPLACEMENTS:</p>
+  <p class="replacements-sub">To be filled in after receiving user's old device after deployment.</p>
+
+  <div class="field-row">
+    <span class="field-label">PREVIOUS PHONE BRAND:</span>
+    <input class="field-input" type="text" id="f-prev-brand" placeholder=" ">
+  </div>
+  <div class="field-row">
+    <span class="field-label">PREVIOUS PHONE MODEL:</span>
+    <input class="field-input" type="text" id="f-prev-model" placeholder=" ">
+  </div>
+  <div class="field-row">
+    <span class="field-label">PREVIOUS IMEI NUMBER:</span>
+    <input class="field-input" type="text" id="f-prev-imei" placeholder=" ">
+  </div>
+</div>
+
+<!-- Sticky Save Bar -->
+<div class="save-bar">
+  <button class="btn-save" id="btn-save">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Save as PDF
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ===================== MOBILE SIGNATURE MODAL ===================== -->
+<div id="sig-modal" role="dialog" aria-modal="true" aria-label="Sign here">
+  <div class="sig-modal-inner">
+    <div class="sig-modal-header">
+      <span class="modal-brand">FGF</span>
+      <span>Team Member Signature</span>
+      <span style="font-size:9pt;color:#888;">Sign in the box below</span>
+    </div>
+    <div class="sig-modal-body">
+      <div class="sig-modal-canvas-wrap" id="modal-canvas-wrap">
+        <canvas id="sig-modal-canvas"></canvas>
+        <div class="sig-modal-hint" id="modal-hint">✦ Sign your name here ✦</div>
+      </div>
+      <div class="sig-modal-line-label">Signature of Team Member</div>
+    </div>
+    <div class="sig-modal-footer">
+      <button class="sig-modal-btn cancel" onclick="closeSigModal(false)">Cancel</button>
+      <button class="sig-modal-btn clear" onclick="clearModalCanvas()">Clear</button>
+      <button class="sig-modal-btn confirm" onclick="closeSigModal(true)">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  /* ---- Agent cookie ---- */
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : '';
+  }
+  document.getElementById('agent-name').textContent = getCookie('agent_name').replace(/^"|"$/g, '');
+
+  /* ---- Default date ---- */
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+
+  /* ===================== MOBILE DETECTION ===================== */
+  function isMobile() {
+    return ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 900;
+  }
+
+  /* Show/hide the right signature UI */
+  function setupSigUI() {
+    if (isMobile()) {
+      document.getElementById('sig-desktop').style.display = 'none';
+      document.getElementById('sig-mobile').style.display = 'flex';
+    } else {
+      document.getElementById('sig-desktop').style.display = 'flex';
+      document.getElementById('sig-mobile').style.display = 'none';
+    }
+  }
+  setupSigUI();
+  window.addEventListener('resize', setupSigUI);
+
+  /* ===================== DESKTOP INLINE CANVAS ===================== */
+  const desktopCanvas = document.getElementById('sig-canvas');
+  const desktopHint   = document.getElementById('sig-hint');
+  const dCtx          = desktopCanvas.getContext('2d');
+  let dDrawing = false, dHasSig = false;
+
+  function setupDesktopCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    const container = desktopCanvas.parentElement;
+    const w = Math.min(container.clientWidth, 320);
+    const h = 80;
+    desktopCanvas.width  = w * dpr;
+    desktopCanvas.height = h * dpr;
+    desktopCanvas.style.width  = w + 'px';
+    desktopCanvas.style.height = h + 'px';
+    dCtx.setTransform(1,0,0,1,0,0);
+    dCtx.scale(dpr, dpr);
+    dCtx.strokeStyle = '#000';
+    dCtx.lineWidth   = 1.8;
+    dCtx.lineCap     = 'round';
+    dCtx.lineJoin    = 'round';
+  }
+  setupDesktopCanvas();
+  window.addEventListener('resize', setupDesktopCanvas);
+
+  function dGetXY(e) {
+    const r     = desktopCanvas.getBoundingClientRect();
+    const touch = e.touches ? e.touches[0] : e;
+    return {
+      x: touch.clientX - r.left,
+      y: touch.clientY - r.top
+    };
+  }
+
+  desktopCanvas.addEventListener('mousedown', e => {
+    dDrawing = true;
+    const p = dGetXY(e);
+    dCtx.beginPath(); dCtx.moveTo(p.x, p.y);
+    if (!dHasSig) { dHasSig = true; desktopHint.style.display = 'none'; }
+  });
+  desktopCanvas.addEventListener('mousemove', e => {
+    if (!dDrawing) return;
+    const p = dGetXY(e); dCtx.lineTo(p.x, p.y); dCtx.stroke();
+  });
+  desktopCanvas.addEventListener('mouseup',    () => dDrawing = false);
+  desktopCanvas.addEventListener('mouseleave', () => dDrawing = false);
+  desktopCanvas.addEventListener('touchstart', e => {
+    e.preventDefault(); dDrawing = true;
+    const p = dGetXY(e); dCtx.beginPath(); dCtx.moveTo(p.x, p.y);
+    if (!dHasSig) { dHasSig = true; desktopHint.style.display = 'none'; }
+  }, { passive: false });
+  desktopCanvas.addEventListener('touchmove', e => {
+    e.preventDefault(); if (!dDrawing) return;
+    const p = dGetXY(e); dCtx.lineTo(p.x, p.y); dCtx.stroke();
+  }, { passive: false });
+  desktopCanvas.addEventListener('touchend', () => dDrawing = false);
+
+  document.getElementById('btn-clear').addEventListener('click', () => {
+    dCtx.clearRect(0, 0, desktopCanvas.width, desktopCanvas.height);
+    dHasSig = false;
+    desktopHint.style.display = '';
+  });
+
+  /* ===================== MOBILE MODAL CANVAS ===================== */
+  const modal       = document.getElementById('sig-modal');
+  const modalCanvas = document.getElementById('sig-modal-canvas');
+  const modalHint   = document.getElementById('modal-hint');
+  const mCtx        = modalCanvas.getContext('2d');
+  let mDrawing = false, mHasSig = false;
+  let mobileSigDataUrl = null; // stores confirmed signature
+  
+function setupModalCanvas() {
+  const container = document.getElementById('modal-canvas-wrap');
+  const dpr = window.devicePixelRatio || 1;
+
+  // 1. Get the actual live CSS dimensions of the container
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+
+  // 2. Set the internal drawing buffer to match physical pixels
+  modalCanvas.width = w * dpr;
+  modalCanvas.height = h * dpr;
+
+  // 3. Keep the CSS display size consistent
+  modalCanvas.style.width = w + "px";
+  modalCanvas.style.height = h + "px";
+
+  // 4. Reset and then apply the scale for High DPI (Retina) screens
+  mCtx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform first
+  mCtx.scale(dpr, dpr);
+
+  // 5. Re-apply line styles (these are lost when canvas width/height are set)
+  mCtx.strokeStyle = '#1a1a1a';
+  mCtx.lineWidth = 2.5;
+  mCtx.lineCap = 'round';
+  mCtx.lineJoin = 'round';
+}
+  // Cache the canvas rect once per touch session (re-read on each touchstart)
+  // so we're never using a stale measurement from before the modal painted.
+  let mCanvasRect = null;
+
+function mGetXY(e) {
+  const touch = e.touches ? e.touches[0] : e;
+  const rect = modalCanvas.getBoundingClientRect();
+
+  return {
+    x: touch.clientX - rect.left,
+    y: touch.clientY - rect.top
+  };
+}
+
+  modalCanvas.addEventListener('mousedown', e => {
+    mCanvasRect = modalCanvas.getBoundingClientRect(); // fresh rect on each stroke
+    mDrawing = true;
+    const p = mGetXY(e); mCtx.beginPath(); mCtx.moveTo(p.x, p.y);
+    if (!mHasSig) { mHasSig = true; modalHint.style.display = 'none'; }
+  });
+  modalCanvas.addEventListener('mousemove', e => {
+    if (!mDrawing) return;
+    const p = mGetXY(e); mCtx.lineTo(p.x, p.y); mCtx.stroke();
+  });
+  modalCanvas.addEventListener('mouseup',    () => { mDrawing = false; mCanvasRect = null; });
+  modalCanvas.addEventListener('mouseleave', () => { mDrawing = false; mCanvasRect = null; });
+  modalCanvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    mCanvasRect = modalCanvas.getBoundingClientRect(); // fresh rect on each stroke
+    mDrawing = true;
+    const p = mGetXY(e); mCtx.beginPath(); mCtx.moveTo(p.x, p.y);
+    if (!mHasSig) { mHasSig = true; modalHint.style.display = 'none'; }
+  }, { passive: false });
+  modalCanvas.addEventListener('touchmove', e => {
+    e.preventDefault(); if (!mDrawing) return;
+    const p = mGetXY(e); mCtx.lineTo(p.x, p.y); mCtx.stroke();
+  }, { passive: false });
+  modalCanvas.addEventListener('touchend',   () => { mDrawing = false; mCanvasRect = null; });
+  modalCanvas.addEventListener('touchcancel',() => { mDrawing = false; mCanvasRect = null; });
+
+  function clearModalCanvas() {
+    mCtx.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
+    mHasSig = false;
+    modalHint.style.display = '';
+  }
+
+  function openSigModal() {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // Use setTimeout(0) after two rAFs — gives browser time to paint the modal
+    // fully before we measure, ensuring getBoundingClientRect is accurate.
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => {
+      setupModalCanvas();
+      if (mobileSigDataUrl) {
+        const img = new Image();
+        img.onload = () => {
+          const dpr = window.devicePixelRatio || 1;
+          mCtx.drawImage(img, 0, 0, modalCanvas.width / dpr, modalCanvas.height / dpr);
+          mHasSig = true;
+          modalHint.style.display = 'none';
+        };
+        img.src = mobileSigDataUrl;
+      }
+    }, 0)));
+  }
+
+  function closeSigModal(confirm) {
+    if (confirm) {
+      if (!mHasSig) {
+        modalCanvas.style.outline = '2px solid #e74c3c';
+        setTimeout(() => modalCanvas.style.outline = '', 1800);
+        return;
+      }
+      mobileSigDataUrl = modalCanvas.toDataURL('image/png');
+      // Show preview
+      const preview = document.getElementById('sig-preview');
+      const previewImg = document.getElementById('sig-preview-img');
+      previewImg.src = mobileSigDataUrl;
+      preview.classList.add('has-sig');
+    }
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function clearMobileSig() {
+    mobileSigDataUrl = null;
+    const preview = document.getElementById('sig-preview');
+    const previewImg = document.getElementById('sig-preview-img');
+    previewImg.src = '';
+    preview.classList.remove('has-sig');
+    // Also clear modal canvas for next open
+    clearModalCanvas();
+  }
+
+  /* Unified hasSig check */
+  function getHasSig() {
+    if (isMobile()) return !!mobileSigDataUrl;
+    return dHasSig;
+  }
+
+  /* Unified sig data URL */
+  function getSigDataUrl() {
+    if (isMobile()) return mobileSigDataUrl;
+    return desktopCanvas.toDataURL('image/png');
+  }
+
+  /* ---- Toast helper ---- */
+  function showToast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (isError ? '' : ' success') + ' show';
+    setTimeout(() => t.className = 'toast', 2800);
+  }
+
+  /* ===================== SAVE AS PDF ===================== */
+  document.getElementById('btn-save').addEventListener('click', async () => {
+    const name        = document.getElementById('f-name').value.trim();
+    const phone_model = document.getElementById('f-model').value.trim();
+
+    if (!name) {
+      const el = document.getElementById('f-name');
+      el.focus();
+      el.style.borderBottomColor = '#c0392b';
+      setTimeout(() => el.style.borderBottomColor = '', 2500);
+      showToast('⚠ Please enter the Team Member Name before saving.', true);
+      return;
+    }
+
+    if (!getHasSig()) {
+      if (isMobile()) {
+        const preview = document.getElementById('sig-preview');
+        preview.style.borderColor = '#c0392b';
+        setTimeout(() => preview.style.borderColor = '', 2500);
+      } else {
+        desktopCanvas.style.outline = '2px solid #c0392b';
+        setTimeout(() => desktopCanvas.style.outline = '', 2500);
+      }
+      showToast('⚠ Please draw the Team Member Signature before saving.', true);
+      return;
+    }
+
+    const btn = document.getElementById('btn-save');
+    btn.disabled = true;
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0"/></svg>&nbsp;Generating PDF…`;
+
+    const sigDataUrl = getSigDataUrl();
+    const clone = document.documentElement.cloneNode(true);
+
+    clone.querySelectorAll('.save-bar, .toast, script, #sig-modal, .sig-clear, .sig-mobile-trigger button').forEach(el => el.remove());
+
+    clone.querySelectorAll('.field-input').forEach(input => {
+      const span = document.createElement('span');
+      span.className = 'field-input';
+      span.style.cssText = 'display:inline-block;border-bottom:1.5px solid #000;min-width:120px;padding:2px 4px;font-family:Calibri,Arial,sans-serif;font-size:10.5pt;';
+      if (input.type === 'date' && input.value) {
+        const d = new Date(input.value + 'T00:00:00');
+        span.textContent = d.toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' });
+      } else {
+        span.textContent = input.value || '';
+      }
+      input.parentNode.replaceChild(span, input);
+    });
+
+    // Replace whichever sig element is active
+    const cloneDesktopCanvas = clone.querySelector('#sig-canvas');
+    const cloneMobilePreview = clone.querySelector('#sig-preview');
+
+    const sigImg = document.createElement('img');
+    sigImg.src = sigDataUrl;
+    sigImg.style.cssText = 'display:block;width:100%;max-width:320px;height:80px;object-fit:contain;';
+
+    if (cloneDesktopCanvas) cloneDesktopCanvas.parentNode.replaceChild(sigImg, cloneDesktopCanvas);
+    if (cloneMobilePreview) {
+      const mImg = document.createElement('img');
+      mImg.src = sigDataUrl;
+      mImg.style.cssText = 'display:block;width:100%;max-width:320px;height:80px;object-fit:contain;border-radius:4px;';
+      cloneMobilePreview.parentNode.replaceChild(mImg, cloneMobilePreview);
+    }
+
+    ['#sig-hint', '#modal-hint', '.sig-clear', '.sig-preview-hint'].forEach(sel => {
+      clone.querySelectorAll(sel).forEach(el => el.remove());
+    });
+
+    const htmlString = '<!DOCTYPE html>\n' + clone.outerHTML;
+
+    try {
+      const response = await fetch('/phone-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone_model, html: htmlString })
+      });
+
+      if (!response.ok) throw new Error('Server returned ' + response.status);
+      const result = await response.json();
+
+      if (result.status === 'success') {
+        const link = document.createElement('a');
+        link.href = '/download?file=' + encodeURIComponent(result.file);
+        link.download = name.replace(/\s+/g, '_') + '_phone_contract.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('✓ PDF downloaded successfully!', false);
+      } else {
+        throw new Error('Unexpected server response');
+      }
+    } catch (err) {
+      console.error('PDF generation error:', err);
+      showToast('⚠ Could not generate PDF. Is the server running?', true);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Save as PDF`;
+    }
+  });
+</script>
+
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</body>
+</html>
