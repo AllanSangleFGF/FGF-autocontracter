@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Roster — FGF TechCare Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #5cb85c; --green-dark: #3d8f39; --green-light: #e8f5e9; --green-mid: #a5d6a7;
+    --bg: #f2f4f3; --white: #ffffff; --ink: #1a1f1a; --muted: #6b7280; --border: #dde3dd;
+    --gold: #f59e0b; --gold-light: #fef3c7;
+  }
+  html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  .sidebar { position: fixed; top: 0; left: 0; width: 220px; height: 100vh; background: #1a1f1a; display: flex; flex-direction: column; z-index: 100; padding: 0 0 24px; }
+  .sidebar-brand { padding: 28px 24px 24px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .brand-logo { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 800; color: var(--green); letter-spacing: 3px; }
+  .brand-sub { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px; }
+  .sidebar-nav { flex: 1; padding: 20px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .nav-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 14px 12px 6px; font-weight: 600; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.18s; }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+  .nav-item.active { background: rgba(245,158,11,0.15); color: var(--gold); }
+  .nav-item svg { flex-shrink: 0; opacity: 0.7; }
+  .nav-item.active svg { opacity: 1; }
+  .nav-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 12px; }
+  .sidebar-footer { padding: 16px 12px 0; border-top: 1px solid rgba(255,255,255,0.07); margin: 0 12px; }
+  .agent-badge { display: flex; align-items: center; gap: 10px; }
+  .agent-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .agent-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+  .agent-role { font-size: 10px; color: var(--gold); }
+
+  .main { margin-left: 220px; min-height: 100vh; display: flex; flex-direction: column; }
+  .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; }
+  .admin-badge { background: var(--gold-light); color: #92400e; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .content { flex: 1; padding: 36px; max-width: 760px; }
+
+  .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+  .page-sub { font-size: 13px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+
+  .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .upload-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+  .upload-card:hover { border-color: var(--green-mid); box-shadow: 0 4px 20px rgba(92,184,92,0.1); }
+  .card-top { padding: 22px 22px 16px; }
+  .card-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--green-light); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .card-icon.blue { background: #e3f2fd; }
+  .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .drop-zone { margin: 0 16px 16px; border: 2px dashed var(--border); border-radius: 8px; padding: 24px 16px; text-align: center; cursor: pointer; transition: border-color 0.18s, background 0.18s; position: relative; }
+  .drop-zone:hover, .drop-zone.dragover { border-color: var(--green); background: var(--green-light); }
+  .drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .drop-icon { margin-bottom: 8px; color: var(--muted); }
+  .drop-text { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  .drop-text strong { color: var(--ink); }
+  .drop-filename { font-size: 12px; font-weight: 600; color: var(--green-dark); margin-top: 8px; display: none; word-break: break-all; }
+  .btn-upload { display: block; width: calc(100% - 32px); margin: 0 16px 16px; padding: 10px; background: var(--green); color: #fff; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.18s; }
+  .btn-upload:hover:not(:disabled) { background: var(--green-dark); }
+  .btn-upload:disabled { background: #ccc; cursor: not-allowed; }
+
+  .toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #c0392b; color: #fff; padding: 11px 22px; font-size: 13px; border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,0.2); transition: transform 0.3s ease; white-space: nowrap; z-index: 2000; pointer-events: none; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: #2e7d32; }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 100%; height: 56px; flex-direction: row; align-items: center; padding: 0 20px; }
+    .sidebar-brand { padding: 0; border: none; }
+    .brand-sub, .sidebar-nav, .sidebar-footer { display: none; }
+    .main { margin-left: 0; padding-top: 56px; }
+    .upload-grid { grid-template-columns: 1fr; }
+    .content { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">FGF</div>
+    <div class="brand-sub">TechCare Portal</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Menu</div>
+    <a class="nav-item" href="/dashboard">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="/phone-contract">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      Phone Contract
+    </a>
+    <a class="nav-item" href="/laptop-contract">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Laptop Policy
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-label" style="color:rgba(245,158,11,0.6);">Admin</div>
+    <a class="nav-item active" href="/admin/upload-roster">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload Roster
+    </a>
+    <a class="nav-item" href="/admin/contracts">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search Contracts
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="agent-badge">
+      <div class="agent-avatar" id="avatar-initials">A</div>
+      <div>
+        <div class="agent-name">Admin</div>
+        <div class="agent-role">Administrator</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <span class="topbar-title">Upload Roster</span>
+    <span class="admin-badge">⚡ Admin</span>
+  </header>
+  <div class="content">
+    <div class="page-eyebrow">Admin Panel</div>
+    <div class="page-title">Upload Team Roster</div>
+    <div class="page-sub">Replace the active phone or laptop roster with a new Excel file (.xlsx). The updated list will be available for search on the dashboard immediately after upload.</div>
+
+    <div class="upload-grid">
+
+      <!-- Phone Roster -->
+      <div class="upload-card">
+        <div class="card-top">
+          <div class="card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3d8f39" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="card-title">Phone Roster</div>
+          <div class="card-desc">Replaces the current phone contract team member list.</div>
+        </div>
+        <div class="drop-zone" id="drop-phone">
+          <input type="file" accept=".xlsx" id="file-phone" onchange="handleFileSelect('phone')">
+          <div class="drop-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+          <div class="drop-text"><strong>Click to browse</strong> or drag &amp; drop</div>
+          <div class="drop-text">.xlsx files only</div>
+          <div class="drop-filename" id="fname-phone"></div>
+        </div>
+        <button class="btn-upload" id="btn-phone" disabled onclick="uploadRoster('phone')">Upload Phone Roster</button>
+        <button class="btn-upload" id="btn-phone" onclick="downloadRosterP('phone')">download base template</button>
+        
+      </div>
+
+      <!-- Laptop Roster -->
+      <div class="upload-card">
+        <div class="card-top">
+          <div class="card-icon blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1565c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div class="card-title">Laptop Roster</div>
+          <div class="card-desc">Replaces the current laptop policy team member list.</div>
+        </div>
+        <div class="drop-zone" id="drop-laptop">
+          <input type="file" accept=".xlsx" id="file-laptop" onchange="handleFileSelect('laptop')">
+          <div class="drop-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+          <div class="drop-text"><strong>Click to browse</strong> or drag &amp; drop</div>
+          <div class="drop-text">.xlsx files only</div>
+          <div class="drop-filename" id="fname-laptop"></div>
+        </div>
+        <button class="btn-upload" id="btn-laptop" disabled onclick="uploadRoster('laptop')">Upload Laptop Roster</button>
+        <button class="btn-upload" id="btn-phone" onclick="downloadRosterL('phone')">download base template</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : '';
+  }
+  const initials = getCookie('agent_name').replace(/^"|"$/g,'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase() || 'A';
+  document.getElementById('avatar-initials').textContent = initials;
+
+  function showToast(msg, success) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (success ? ' success' : '');
+    setTimeout(() => t.className = 'toast', 3200);
+  }
+
+  function handleFileSelect(type) {
+    const input = document.getElementById('file-' + type);
+    const fname = document.getElementById('fname-' + type);
+    const btn   = document.getElementById('btn-' + type);
+    if (input.files.length) {
+      fname.textContent = '\uD83D\uDCC4 ' + input.files[0].name;
+      fname.style.display = 'block';
+      btn.disabled = false;
+    }
+  }
+
+  ['phone', 'laptop'].forEach(type => {
+    const zone = document.getElementById('drop-' + type);
+    zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.name.endsWith('.xlsx')) {
+        const input = document.getElementById('file-' + type);
+        const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files;
+        handleFileSelect(type);
+      } else { showToast('\u26A0 Please drop a valid .xlsx file', false); }
+    });
+  });
+
+  async function uploadRoster(type) {
+    const input = document.getElementById('file-' + type);
+    const btn   = document.getElementById('btn-' + type);
+    if (!input.files.length) return;
+    const label = type === 'phone' ? 'Phone' : 'Laptop';
+    btn.disabled = true; btn.textContent = 'Uploading\u2026';
+    const formData = new FormData();
+    formData.append('type', type);
+    formData.append('file', input.files[0]);
+    try {
+      const res  = await fetch('/admin/upload-roster', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.status === 'success') {
+        showToast('\u2713 ' + data.message, true);
+        document.getElementById('fname-' + type).style.display = 'none';
+        input.value = '';
+      } else { showToast('\u26A0 ' + data.message, false); btn.disabled = false; }
+    } catch(e) { showToast('\u26A0 Upload failed. Is the server running?', false); btn.disabled = false; }
+    btn.textContent = 'Upload ' + label + ' Roster';
+    btn.disabled = true;
+  }
+  function downloadRosterP() {
+    window.location.href = "/downloadp";
+    console.log("Downloading phone roster template...");
+  }
+  function downloadRosterL() {
+    window.location.href = "/downloadl";
+    console.log("Downloading phone roster template...");
+}
+</script>
+</body>
+</html>

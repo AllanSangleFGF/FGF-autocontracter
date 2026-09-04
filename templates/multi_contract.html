@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contract Generator — FGF TechCare</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #5cb85c; --green-dark: #3d8f39; --green-light: #e8f5e9; --green-mid: #a5d6a7;
+    --bg: #f2f4f3; --white: #ffffff; --ink: #1a1f1a; --muted: #6b7280; --border: #dde3dd;
+    --gold: #f59e0b; --gold-light: #fef3c7;
+    --purple: #667eea; --purple2: #764ba2;
+  }
+  html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  /* ---- SIDEBAR ---- */
+  .sidebar { position: fixed; top: 0; left: 0; width: 220px; height: 100vh; background: #1a1f1a; display: flex; flex-direction: column; z-index: 100; padding: 0 0 24px; }
+  .sidebar-brand { padding: 28px 24px 24px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .brand-logo { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 800; color: var(--green); letter-spacing: 3px; }
+  .brand-sub { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px; }
+  .sidebar-nav { flex: 1; padding: 20px 12px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+  .nav-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); padding: 14px 12px 6px; font-weight: 600; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.18s; }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+  .nav-item.active { background: rgba(102,126,234,0.15); color: #a5b4fc; }
+  .nav-item svg { flex-shrink: 0; opacity: 0.7; }
+  .nav-item.active svg { opacity: 1; }
+  .nav-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 12px; }
+  .sidebar-footer { padding: 16px 12px 0; border-top: 1px solid rgba(255,255,255,0.07); margin: 0 12px; }
+  .agent-badge { display: flex; align-items: center; gap: 10px; }
+  .agent-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .agent-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agent-role { font-size: 10px; color: rgba(255,255,255,0.3); }
+
+  /* ---- ADMIN NAV (hidden by default) ---- */
+  #admin-nav { display: none; padding-top: 0; }
+
+  /* ---- MAIN ---- */
+  .main { margin-left: 220px; min-height: 100vh; display: flex; flex-direction: column; }
+  .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+  .topbar-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .step-indicator { display: flex; gap: 6px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+  .dot.active { background: var(--purple); }
+  .dot.done { background: var(--green); }
+
+  .content { flex: 1; padding: 36px; max-width: 780px; }
+  .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin-bottom: 6px; }
+  .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+  .page-sub { font-size: 13px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+
+  /* ---- CARDS ---- */
+  .card { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 28px; margin-bottom: 20px; }
+  .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+
+  /* ---- UPLOAD ---- */
+  .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .upload-zone { border: 2px dashed var(--border); border-radius: 10px; padding: 28px 16px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+  .upload-zone:hover { border-color: var(--purple); background: rgba(102,126,234,0.04); }
+  .upload-zone.has-file { border-color: var(--green); background: var(--green-light); }
+  .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { font-size: 2rem; margin-bottom: 8px; }
+  .upload-label { font-weight: 600; font-size: 13.5px; color: var(--ink); margin-bottom: 3px; }
+  .upload-hint { font-size: 11.5px; color: var(--muted); }
+  .upload-fname { font-size: 12px; color: var(--green-dark); margin-top: 8px; word-break: break-all; font-weight: 600; display: none; }
+
+  .tip-box { background: #f8f7ff; border: 1px solid rgba(102,126,234,0.25); border-radius: 8px; padding: 12px 16px; font-size: 12.5px; color: var(--muted); margin-top: 16px; line-height: 1.7; }
+  .tip-box code { background: #ede9fe; padding: 2px 6px; border-radius: 4px; color: #5b21b6; font-family: monospace; font-size: 11.5px; }
+
+  /* ---- PREVIEW ---- */
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .placeholders-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+  .ph-tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 11.5px; font-family: monospace; font-weight: 600; border: 1px solid var(--border); background: #fafafa; color: var(--muted); }
+  .ph-tag.matched { background: var(--green-light); border-color: var(--green-mid); color: var(--green-dark); }
+  .ph-tag.unmatched { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+  .match-info { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .table-wrap { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; max-height: 240px; overflow-y: auto; margin-top: 6px; }
+  .users-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .users-table th { background: #fafafa; padding: 9px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .users-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--ink); }
+  .users-table tr:last-child td { border-bottom: none; }
+
+  .alert { padding: 11px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; }
+  .alert.error { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+  .alert.info  { background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; }
+
+  /* ---- GENERATE ---- */
+  .btn-generate { width: 100%; padding: 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--purple) 0%, var(--purple2) 100%); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; margin-top: 16px; }
+  .btn-generate:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(102,126,234,0.35); }
+  .btn-generate:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .progress-wrap { display: none; margin-bottom: 16px; }
+  .progress-wrap.visible { display: block; }
+  .progress-track { background: var(--bg); border-radius: 99px; height: 7px; overflow: hidden; margin: 10px 0 6px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--purple2)); border-radius: 99px; transition: width 0.3s ease; width: 0%; }
+  .progress-label { font-size: 12.5px; color: var(--muted); }
+
+  .results-list { display: flex; flex-direction: column; gap: 6px; max-height: 300px; overflow-y: auto; margin-top: 4px; }
+  .result-item { display: flex; align-items: center; justify-content: space-between; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; font-size: 13px; cursor: pointer; transition: background 0.15s; }
+  .result-item:hover { background: var(--green-light); border-color: var(--green-mid); }
+  .result-item .ri-name { font-weight: 500; color: var(--ink); }
+  .result-item .ri-status { font-size: 12px; color: var(--green-dark); }
+  .result-item .ri-status.error { color: #dc2626; }
+
+  .btn-zip { display: none; width: 100%; padding: 12px; border: 2px solid var(--purple); border-radius: 8px; background: transparent; color: var(--purple); font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+  .btn-zip:hover { background: rgba(102,126,234,0.07); }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 100%; height: 56px; flex-direction: row; align-items: center; padding: 0 20px; }
+    .sidebar-brand { padding: 0; border: none; }
+    .brand-sub, .sidebar-nav, .sidebar-footer { display: none; }
+    .main { margin-left: 0; padding-top: 56px; }
+    .upload-grid { grid-template-columns: 1fr; }
+    .content { padding: 24px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">FGF</div>
+    <div class="brand-sub">TechCare Portal</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Menu</div>
+    <a class="nav-item" href="/dashboard">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="/phone-contract">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      Phone Contract
+    </a>
+    <a class="nav-item" href="/laptop-contract">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Laptop Policy
+    </a>
+    <a class="nav-item active" href="/contract-generator">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Hard copy Contract Generator
+    </a>
+    <div class="nav-divider"></div>
+  </nav>
+  <nav class="sidebar-nav" id="admin-nav" style="padding-top:0;">
+    <div class="nav-label" style="color:rgba(245,158,11,0.6);">Admin</div>
+    <a class="nav-item" href="/admin/upload-roster">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload Roster
+    </a>
+    <a class="nav-item" href="/admin/contracts">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search Contracts
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="agent-badge">
+      <div class="agent-avatar" id="avatar-initials">?</div>
+      <div>
+        <div class="agent-name" id="sidebar-agent-name">Loading…</div>
+        <div class="agent-role">TechCare Agent</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="main" id="main-wrap" data-username="{{ username }}">
+  <header class="topbar">
+    <span class="topbar-title">Contract Generator</span>
+    <div class="topbar-right">
+      <div class="step-indicator">
+        <div class="dot active" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="page-eyebrow">Bulk Tool</div>
+    <div class="page-title">Card Contract Generator</div>
+    <div class="page-sub">Upload a Word template with <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;font-size:12px;">{{placeholders}}</code> and an Excel user list — get one personalized .docx per person, downloadable as a ZIP.</div>
+
+    <!-- UPLOAD CARD -->
+    <div class="card">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload Files
+      </div>
+      <div class="upload-grid">
+        <div class="upload-zone" id="docZone">
+          <input type="file" id="docInput" accept=".docx" />
+          <div class="upload-icon">📝</div>
+          <div class="upload-label">Contract Template</div>
+          <div class="upload-hint">.docx with {{placeholders}}</div>
+          <div class="upload-fname" id="docName"></div>
+        </div>
+        <div class="upload-zone" id="xlsxZone">
+          <input type="file" id="xlsxInput" accept=".xlsx,.xls,.csv" />
+          <div class="upload-icon">📊</div>
+          <div class="upload-label">User List</div>
+          <div class="upload-hint">.xlsx / .xls / .csv</div>
+          <div class="upload-fname" id="xlsxName"></div>
+        </div>
+      </div>
+      <div class="tip-box">
+        💡 In your Word template, use <code>{{ColumnName}}</code> placeholders matching your Excel column headers exactly.<br>
+        Example: Excel column <code>full_name</code> → use <code>{{full_name}}</code> in the .docx
+      </div>
+    </div>
+
+    <!-- PREVIEW CARD -->
+    <div class="card" id="previewCard" style="display:none">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Preview &amp; Mapping
+      </div>
+      <div id="alertBox"></div>
+      <div id="placeholderSection" style="display:none; margin-bottom:20px;">
+        <div class="section-label">Template Placeholders Detected</div>
+        <div class="placeholders-wrap" id="placeholdersList"></div>
+        <div class="match-info" id="matchInfo"></div>
+      </div>
+      <div id="usersSection" style="display:none;">
+        <div class="section-label">Users — <span id="userCount">0</span> found</div>
+        <div class="table-wrap">
+          <table class="users-table" id="usersTable"></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERATE CARD -->
+    <div class="card" id="generateCard" style="display:none">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Generate Contracts
+      </div>
+      <div class="progress-wrap" id="progressSection">
+        <div class="progress-label" id="progressLabel">Processing…</div>
+        <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+      </div>
+      <div class="results-list" id="resultsList"></div>
+      <button class="btn-zip" id="downloadAllBtn" onclick="downloadAll()">⬇ Download All as ZIP</button>
+      <button class="btn-generate" id="generateBtn" onclick="generate()" disabled>Generate Contracts</button>
+    </div>
+  </div>
+</div>
+
+<script>
+{% raw %}
+  /* ---- Sidebar init ---- */
+  function getCookie(name) {
+    const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return m ? m[2] : '';
+  }
+  const agentName = getCookie('agent_name') || 'Agent';
+  const initials  = agentName.replace(/^"|"$/g,'').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase() || '?';
+  document.getElementById('sidebar-agent-name').textContent = agentName.replace(/^"|"$/g,'');
+  document.getElementById('avatar-initials').textContent    = initials;
+
+  const currentUsername = document.getElementById("main-wrap").dataset.username;
+  if (currentUsername === 'admin') {
+    document.getElementById('admin-nav').style.display = 'flex';
+    document.getElementById('admin-nav').style.flexDirection = 'column';
+  }
+
+  /* ---- Generator logic ---- */
+  let docFile = null, users = [], columns = [], templatePlaceholders = [], generatedFiles = [];
+
+  document.getElementById('docInput').addEventListener('change', e => {
+    docFile = e.target.files[0];
+    if (docFile) {
+      document.getElementById('docName').textContent = docFile.name;
+      document.getElementById('docName').style.display = 'block';
+      document.getElementById('docZone').classList.add('has-file');
+      extractPlaceholders(docFile);
+    }
+  });
+
+  document.getElementById('xlsxInput').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) {
+      document.getElementById('xlsxName').textContent = file.name;
+      document.getElementById('xlsxName').style.display = 'block';
+      document.getElementById('xlsxZone').classList.add('has-file');
+      readExcel(file);
+    }
+  });
+
+  async function extractPlaceholders(file) {
+    try {
+      const ab  = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(ab);
+      const xmlRaw = await zip.file('word/document.xml').async('string');
+      const fullText = xmlRaw.replace(/<[^>]+>/g, ' ');
+      const matches = fullText.match(/\{\{([^}]+)\}\}/g) || [];
+      templatePlaceholders = [...new Set(matches.map(m => m.slice(2, -2).trim()))];
+      if (templatePlaceholders.length === 0)
+        showAlert('No {{placeholders}} found in the template. Make sure your .docx uses {{ColumnName}} syntax.', 'error');
+      renderUI();
+    } catch (err) {
+      showAlert('Could not parse .docx file: ' + err.message, 'error');
+    }
+  }
+
+  function readExcel(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const wb   = XLSX.read(e.target.result, { type: 'array' });
+        const ws   = wb.Sheets[wb.SheetNames[0]];
+        const data = XLSX.utils.sheet_to_json(ws, { defval: '' });
+        if (!data.length) { showAlert('Excel file appears empty.', 'error'); return; }
+        columns = Object.keys(data[0]);
+        users   = data;
+        renderUI();
+      } catch (err) {
+        showAlert('Could not read spreadsheet: ' + err.message, 'error');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function renderUI() {
+    const hasUsers = users.length > 0;
+    const hasDoc   = !!docFile;
+    document.getElementById('previewCard').style.display  = (hasDoc || hasUsers) ? 'block' : 'none';
+    document.getElementById('generateCard').style.display = (hasDoc || hasUsers) ? 'block' : 'none';
+
+    if (templatePlaceholders.length > 0 && hasUsers) {
+      document.getElementById('placeholderSection').style.display = 'block';
+      const list = document.getElementById('placeholdersList');
+      list.innerHTML = '';
+      let matched = 0;
+      templatePlaceholders.forEach(p => {
+        const tag = document.createElement('span');
+        tag.className = 'ph-tag';
+        const col = columns.find(c => c.trim().toLowerCase() === p.toLowerCase());
+        if (col) { tag.classList.add('matched'); matched++; } else { tag.classList.add('unmatched'); }
+        tag.textContent = `{{${p}}}`;
+        list.appendChild(tag);
+      });
+      document.getElementById('matchInfo').innerHTML =
+        `<b>${matched}</b> of <b>${templatePlaceholders.length}</b> placeholders matched.` +
+        (matched < templatePlaceholders.length
+          ? ' <span style="color:#d97706">⚠ Unmatched ones will be left blank.</span>'
+          : ' <span style="color:var(--green-dark)">✅ All matched!</span>');
+    }
+
+    if (hasUsers) {
+      document.getElementById('usersSection').style.display = 'block';
+      document.getElementById('userCount').textContent = users.length;
+      const previewCols = columns.slice(0, 5);
+      document.getElementById('usersTable').innerHTML =
+        `<thead><tr>${previewCols.map(c => `<th>${c}</th>`).join('')}${columns.length > 5 ? '<th>…</th>' : ''}</tr></thead>
+         <tbody>${users.slice(0, 5).map(u =>
+           `<tr>${previewCols.map(c => `<td>${u[c] || ''}</td>`).join('')}${columns.length > 5 ? '<td>…</td>' : ''}</tr>`
+         ).join('')}</tbody>`;
+    }
+
+    document.getElementById('generateBtn').disabled = !(docFile && users.length > 0);
+    if (docFile && users.length > 0) setDot(2);
+  }
+
+  function showAlert(msg, type = 'info') {
+    document.getElementById('alertBox').innerHTML = `<div class="alert ${type}">${msg}</div>`;
+  }
+
+  function setDot(n) {
+    for (let i = 1; i <= 3; i++) {
+      const d = document.getElementById('dot' + i);
+      d.className = 'dot';
+      if (i < n) d.classList.add('done');
+      else if (i === n) d.classList.add('active');
+    }
+  }
+
+  async function generate() {
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    btn.textContent = 'Generating…';
+    generatedFiles = [];
+    document.getElementById('resultsList').innerHTML = '';
+    document.getElementById('progressSection').classList.add('visible');
+    document.getElementById('downloadAllBtn').style.display = 'none';
+
+    const docAB     = await docFile.arrayBuffer();
+    const zip0      = await JSZip.loadAsync(docAB);
+    const originalXml = await zip0.file('word/document.xml').async('string');
+
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      const pct  = Math.round(((i + 1) / users.length) * 100);
+      document.getElementById('progressBar').style.width   = pct + '%';
+      document.getElementById('progressLabel').textContent = `Processing ${i + 1} of ${users.length}…`;
+
+      const item = document.createElement('div');
+      item.className = 'result-item';
+
+      try {
+        // Merge split XML runs then replace placeholders
+        let xml = originalXml.replace(/<\/w:t>\s*<w:t[^>]*>/g, '');
+        templatePlaceholders.forEach(ph => {
+          const normalize = s => s.replace(/[\s_]/g, '').toLowerCase();
+          const col = columns.find(c => normalize(c) === normalize(ph));
+          const val = col ? escXml(String(user[col] ?? '')) : '';
+          xml = xml.replace(new RegExp(`\\{\\{\\s*${ph}\\s*\\}\\}`, 'g'), val);
+        });
+
+        const newZip = await JSZip.loadAsync(docAB);
+        newZip.file('word/document.xml', xml);
+        const blob = await newZip.generateAsync({
+          type: 'blob',
+          mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        });
+
+        const fname = buildFilename(user, i);
+        generatedFiles.push({ name: fname, blob });
+        item.innerHTML = `<span class="ri-name">📄 ${fname}</span><span class="ri-status">✓ Click to download</span>`;
+        item.onclick = () => dl(blob, fname);
+      } catch (e) {
+        item.innerHTML = `<span class="ri-name">User ${i + 1}</span><span class="ri-status error">✗ ${e.message}</span>`;
+      }
+
+      document.getElementById('resultsList').appendChild(item);
+      await new Promise(r => setTimeout(r, 5));
+    }
+
+    document.getElementById('progressLabel').textContent = `✅ ${users.length} contract${users.length !== 1 ? 's' : ''} generated!`;
+    document.getElementById('downloadAllBtn').style.display = 'block';
+    btn.textContent = 'Regenerate';
+    btn.disabled = false;
+    setDot(3);
+  }
+
+  function buildFilename(user, i) {
+    const tryCol = rx => columns.find(c => new RegExp(rx, 'i').test(c));
+    const fnCol  = tryCol('first.?name|firstname');
+    const lnCol  = tryCol('last.?name|lastname|surname');
+    const nmCol  = tryCol('^name$|^fullname$|^full.?name$|team.?member.?name');
+    let base = (fnCol && lnCol)
+      ? `${user[fnCol]}_${user[lnCol]}`
+      : nmCol ? user[nmCol]
+      : user[columns[0]] || `user_${i + 1}`;
+    return 'Contract_' + sanitize(String(base)) + '.docx';
+  }
+
+  function escXml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
+  }
+  function sanitize(s) {
+    return s.replace(/[^\w\- ]/g,'').replace(/\s+/g,'_').slice(0,60);
+  }
+  function dl(blob, name) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  async function downloadAll() {
+    const zip = new JSZip();
+    generatedFiles.forEach(f => zip.file(f.name, f.blob));
+    const blob = await zip.generateAsync({ type: 'blob' });
+    dl(blob, 'Contracts.zip');
+  }
+{% endraw %}
+</script>
+</body>
+</html>

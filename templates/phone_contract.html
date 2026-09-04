@@ -658,7 +658,7 @@
   <p class="num-para"><strong>4.</strong> Team members in possession of Company supplied cell phones are expected to protect the equipment from loss, damage, or theft.</p>
   <p class="num-para"><strong>5.</strong> Team members should avoid illegal, disruptive messages and non-productive use of the cell phones.</p>
   <p class="num-para"><strong>6.</strong>&nbsp; The Company prohibits the use of cell phones by team members while operating forklifts or other equipment. The prohibition includes receiving or placing calls/text messages/emails.</p>
-  <p class="num-para"><strong>7.</strong> All communications using cell phones – must meet professional standards of conduct.</p>
+  
 </div>
 
 <!-- PAGE 3 -->
@@ -678,7 +678,7 @@
       </table>
     </div>
   </div>
-
+  <p class="num-para"><strong>7.</strong> All communications using cell phones – must meet professional standards of conduct.</p>
   <p class="num-para"><strong>8.</strong>&nbsp; The Team member is responsible for safe keeping and for the daily charging of the battery to get optimal usage out of the cell phones.</p>
   <p class="num-para"><strong>9.</strong>&nbsp; A team member will be responsible for the activity on the company supplied line/cell phone assigned to him/her. If the cell phone is lost or misplaced, please contact <a href="/cdn-cgi/l/email-protection#b0c4d5d3d8d3d1c2d5f0d6d7d6d2c2d1ded4c39ed3dfdd"><span class="__cf_email__" data-cfemail="bfcbdadcd7dcdecddaffd9d8d9ddcdded1dbcc91dcd0d2">[email&#160;protected]</span></a> immediately. There will be a replacement cost of <strong>$300.00 for cell phone</strong> that will be recovered through payroll for any damage, the phone be lost or stolen, or the cell phone not returned upon termination of services.</p>
 
@@ -701,7 +701,7 @@
   </ul>
 
   <br><br><br><br>
-  <p class="ack-title">ACKNOWLEDGEMENT:</p>
+  
 </div>
 
 <!-- PAGE 4 -->
@@ -721,7 +721,7 @@
       </table>
     </div>
   </div>
-
+  <p class="ack-title">ACKNOWLEDGEMENT:</p>
   <p class="ack-text">I ACKNOWLEDGE that I have REVIEWED and READ the above Cellular Phone Policy.</p>
 
   <div class="field-row">
@@ -847,6 +847,34 @@
 
   /* ---- Default date ---- */
   document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+
+  /* ---- Auto-fill from roster search (saved by dashboard) ---- */
+  (function prefillFromRoster() {
+    const raw = sessionStorage.getItem('prefill_member');
+    if (!raw) return;
+    try {
+      const m = JSON.parse(raw);
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val && val !== 'None') el.value = String(val).trim();
+      };
+      set('f-name',       m.Team_Member_Name);
+      set('f-username',   m.Team_Member_Usern);
+      set('f-model',      ((m.Phone_Brands || '').trim() + ' ' + (m.Phone_Model || '')).trim());
+      set('f-phone',      m.Phone_Number);
+      set('f-imei',       m.IMEI_Number);
+      set('f-prev-brand', m.Previous_Phone);
+      set('f-prev-model', m.Previous_Model);
+      set('f-prev-imei',  m.Previous_IMEI);
+
+      // Green confirmation banner
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#2e7d32;color:#fff;padding:10px 22px;border-radius:6px;font-size:13px;font-family:Calibri,Arial,sans-serif;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
+      banner.textContent = '\u2713 Fields filled from roster: ' + (m.Team_Member_Name || '');
+      document.body.appendChild(banner);
+      setTimeout(() => banner.remove(), 3500);
+    } catch(e) { console.warn('prefill error', e); }
+  })();
 
   /* ===================== MOBILE DETECTION ===================== */
   function isMobile() {

@@ -5,608 +5,92 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Company Laptop Use Policy — FGF Brands Inc.</title>
 <style>
-  /* ===================== BASE RESET ===================== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  /* ===================== SCREEN STYLES ===================== */
   @media screen {
-    body {
-      background: #c8c8c8;
-      font-family: Calibri, 'Segoe UI', Arial, sans-serif;
-      font-size: 11pt;
-      color: #000;
-      padding: 20px 12px 100px;
-    }
-
-    .page {
-      background: #fff;
-      max-width: 720px;
-      width: 100%;
-      margin: 0 auto 24px;
-      padding: 28px 24px 40px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-
-    /* Sticky save button */
-    .save-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #fff;
-      border-top: 2px solid #5cb85c;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: center;
-      z-index: 1000;
-      box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
-    }
-
-    .btn-save {
-      background: #5cb85c;
-      color: #fff;
-      border: none;
-      padding: 13px 48px;
-      font-size: 14px;
-      font-family: Calibri, Arial, sans-serif;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 2px;
-      letter-spacing: 0.04em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-      max-width: 400px;
-      justify-content: center;
-    }
-
+    body { background: #c8c8c8; font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #000; padding: 20px 12px 100px; }
+    .page { background: #fff; max-width: 720px; width: 100%; margin: 0 auto 24px; padding: 28px 24px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 2px solid #5cb85c; padding: 12px 16px; display: flex; justify-content: center; z-index: 1000; box-shadow: 0 -2px 12px rgba(0,0,0,0.12); }
+    .btn-save { background: #5cb85c; color: #fff; border: none; padding: 13px 48px; font-size: 14px; font-family: Calibri, Arial, sans-serif; font-weight: bold; cursor: pointer; border-radius: 2px; letter-spacing: 0.04em; display: flex; align-items: center; gap: 8px; width: 100%; max-width: 400px; justify-content: center; }
     .btn-save:hover { background: #4aa044; }
     .btn-save:active { background: #3d8f39; }
-
-    /* Validation toast */
-    .toast {
-      position: fixed;
-      top: 16px; left: 50%; transform: translateX(-50%) translateY(-80px);
-      background: #c0392b;
-      color: #fff;
-      padding: 11px 22px;
-      font-size: 13px;
-      font-family: Calibri, Arial, sans-serif;
-      border-radius: 2px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-      transition: transform 0.3s ease;
-      white-space: nowrap;
-      z-index: 2000;
-      pointer-events: none;
-    }
+    .toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #c0392b; color: #fff; padding: 11px 22px; font-size: 13px; font-family: Calibri, Arial, sans-serif; border-radius: 2px; box-shadow: 0 4px 14px rgba(0,0,0,0.25); transition: transform 0.3s ease; white-space: nowrap; z-index: 2000; pointer-events: none; }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast.success { background: #2e7d32; }
   }
-
-  /* ===================== SHARED (screen + print) ===================== */
-
-  .doc-header {
-    display: flex;
-    border: 1px solid #aaa;
-    margin-bottom: 20px;
-  }
-
-  .header-logo {
-    background: #5cb85c;
-    width: 110px;
-    min-height: 118px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .header-logo::after {
-    content: '';
-    position: absolute;
-    bottom: 0; right: 0;
-    border-style: solid;
-    border-width: 0 0 26px 26px;
-    border-color: transparent transparent #fff transparent;
-  }
-
-  .fgf-text {
-    font-family: Arial Black, Arial, sans-serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: 2px;
-    line-height: 1;
-  }
-
-  .header-info {
-    flex: 1;
-    border-left: 1px solid #aaa;
-    min-width: 0;
-  }
-
-  .header-title {
-    font-size: 13pt;
-    font-weight: bold;
-    padding: 6px 10px 5px;
-    border-bottom: 1px solid #aaa;
-  }
-
-  .header-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .header-table td {
-    padding: 2px 10px;
-    font-size: 9.5pt;
-    border-bottom: 1px solid #aaa;
-    vertical-align: top;
-  }
-
+  .doc-header { display: flex; border: 1px solid #aaa; margin-bottom: 20px; }
+  .header-logo { background: #5cb85c; width: 110px; min-height: 118px; flex-shrink: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px; position: relative; overflow: hidden; }
+  .header-logo::after { content: ''; position: absolute; bottom: 0; right: 0; border-style: solid; border-width: 0 0 26px 26px; border-color: transparent transparent #fff transparent; }
+  .fgf-text { font-family: Arial Black, Arial, sans-serif; font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 2px; line-height: 1; }
+  .header-info { flex: 1; border-left: 1px solid #aaa; min-width: 0; }
+  .header-title { font-size: 13pt; font-weight: bold; padding: 6px 10px 5px; border-bottom: 1px solid #aaa; }
+  .header-table { width: 100%; border-collapse: collapse; }
+  .header-table td { padding: 2px 10px; font-size: 9.5pt; border-bottom: 1px solid #aaa; vertical-align: top; }
   .header-table tr:last-child td { border-bottom: none; }
   .header-table td:first-child { width: 110px; color: #444; white-space: nowrap; }
-
-  .section-heading {
-    font-size: 11pt;
-    font-weight: bold;
-    margin-top: 16px;
-    margin-bottom: 5px;
-  }
-
-  .sub-heading {
-    font-size: 11pt;
-    font-weight: bold;
-    margin-top: 12px;
-    margin-bottom: 3px;
-  }
-
-  .body-text {
-    font-size: 10.5pt;
-    line-height: 1.5;
-    margin-bottom: 8px;
-  }
-
-  .bullet-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 8px 0;
-  }
-
-  .bullet-list li {
-    padding-left: 14px;
-    position: relative;
-    font-size: 10.5pt;
-    line-height: 1.5;
-    margin-bottom: 2px;
-  }
-
-  .bullet-list li::before {
-    content: '\2022';
-    position: absolute;
-    left: 2px;
-  }
-
-  .disc-list {
-    list-style: disc;
-    margin-left: 40px;
-    margin-bottom: 8px;
-  }
-
-  .disc-list li {
-    font-size: 10.5pt;
-    line-height: 1.55;
-    margin-bottom: 5px;
-    padding-left: 3px;
-  }
-
-  /* FIX: Added missing num-list / num-para CSS */
-  .num-list {
-    list-style: decimal;
-    margin-left: 40px;
-    margin-bottom: 8px;
-  }
-
-  .num-list li {
-    font-size: 10.5pt;
-    line-height: 1.5;
-    margin-bottom: 5px;
-    padding-left: 3px;
-  }
-
-  .num-para {
-    font-size: 10.5pt;
-    line-height: 1.5;
-    margin-bottom: 5px;
-  }
-
-  /* FIX: Added missing cost-table styles */
-  .cost-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 8px;
-    font-size: 10.5pt;
-  }
-
-  .cost-table tr {
-    border-bottom: 1px solid #ddd;
-  }
-
-  .cost-table td {
-    padding: 5px 8px;
-    vertical-align: middle;
-  }
-
-  .cost-table td:first-child {
-    width: 80%;
-  }
-
-  .cost-table td:last-child {
-    text-align: right;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
-  /* Dotted leader line between label and price */
-  .dots {
-    display: inline-block;
-    width: 100%;
-    border-bottom: 1px dotted #888;
-    margin: 0 4px;
-    vertical-align: middle;
-  }
-
-  .ack-title {
-    font-size: 13pt;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: underline;
-    margin: 16px 0 16px;
-  }
-
-  .ack-text {
-    font-size: 10.5pt;
-    margin-bottom: 18px;
-  }
-
-  .field-row {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-    gap: 2px 0;
-  }
-
-  .field-label {
-    font-size: 10.5pt;
-    font-weight: bold;
-    min-width: 210px;
-    flex-shrink: 0;
-  }
-
-  .field-input {
-    flex: 1;
-    min-width: 120px;
-    border: none;
-    border-bottom: 1.5px solid #000;
-    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
-    font-size: 10.5pt;
-    padding: 2px 4px;
-    outline: none;
-    background: transparent;
-  }
-
-  @media screen {
-    .field-input:focus { background: #eef5ff; }
-  }
-
-  .field-static {
-    font-size: 10.5pt;
-    font-weight: bold;
-  }
-
-  /* ---- Desktop signature ---- */
-  .sig-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 24px 0 8px;
-  }
-
-  .sig-canvas-container {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
-  }
-
-  #sig-canvas {
-    display: block;
-    width: 100%;
-    max-width: 320px;
-    height: 80px;
-    cursor: crosshair;
-    touch-action: none;
-  }
-
-  .sig-line {
-    border-top: 1.5px solid #000;
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .sig-label {
-    font-size: 10.5pt;
-    text-align: center;
-    margin-top: 4px;
-  }
-
-  .sig-hint {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 9.5pt;
-    color: #bbb;
-    pointer-events: none;
-    user-select: none;
-    white-space: nowrap;
-  }
-
-  .sig-clear {
-    font-size: 9pt;
-    color: #555;
-    border: 1px solid #ccc;
-    background: #f6f6f6;
-    padding: 4px 14px;
-    cursor: pointer;
-    margin-top: 6px;
-    font-family: Calibri, Arial, sans-serif;
-    border-radius: 2px;
-  }
-
+  .section-heading { font-size: 11pt; font-weight: bold; margin-top: 16px; margin-bottom: 5px; }
+  .body-text { font-size: 10.5pt; line-height: 1.5; margin-bottom: 8px; }
+  .disc-list { list-style: disc; margin-left: 40px; margin-bottom: 8px; }
+  .disc-list li { font-size: 10.5pt; line-height: 1.55; margin-bottom: 5px; padding-left: 3px; }
+  .num-list { list-style: decimal; margin-left: 40px; margin-bottom: 8px; }
+  .num-list li { font-size: 10.5pt; line-height: 1.5; margin-bottom: 5px; padding-left: 3px; }
+  .cost-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 10.5pt; }
+  .cost-table tr { border-bottom: 1px solid #ddd; }
+  .cost-table td { padding: 5px 8px; vertical-align: middle; }
+  .cost-table td:first-child { width: 80%; }
+  .cost-table td:last-child { text-align: right; font-weight: bold; white-space: nowrap; }
+  .dots { display: inline-block; width: 100%; border-bottom: 1px dotted #888; margin: 0 4px; vertical-align: middle; }
+  .ack-title { font-size: 13pt; font-weight: bold; text-align: center; text-decoration: underline; margin: 16px 0 16px; }
+  .ack-text { font-size: 10.5pt; margin-bottom: 18px; }
+  .field-row { display: flex; align-items: baseline; margin-bottom: 10px; flex-wrap: wrap; gap: 2px 0; }
+  .field-label { font-size: 10.5pt; font-weight: bold; min-width: 210px; flex-shrink: 0; }
+  .field-input { flex: 1; min-width: 120px; border: none; border-bottom: 1.5px solid #000; font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 10.5pt; padding: 2px 4px; outline: none; background: transparent; }
+  @media screen { .field-input:focus { background: #eef5ff; } }
+  .field-static { font-size: 10.5pt; font-weight: bold; }
+  .sig-wrapper { display: flex; flex-direction: column; align-items: center; margin: 24px 0 8px; }
+  .sig-canvas-container { position: relative; width: 100%; max-width: 320px; }
+  #sig-canvas { display: block; width: 100%; max-width: 320px; height: 80px; cursor: crosshair; touch-action: none; }
+  .sig-line { border-top: 1.5px solid #000; width: 100%; max-width: 320px; }
+  .sig-label { font-size: 10.5pt; text-align: center; margin-top: 4px; }
+  .sig-hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9.5pt; color: #bbb; pointer-events: none; user-select: none; white-space: nowrap; }
+  .sig-clear { font-size: 9pt; color: #555; border: 1px solid #ccc; background: #f6f6f6; padding: 4px 14px; cursor: pointer; margin-top: 6px; font-family: Calibri, Arial, sans-serif; border-radius: 2px; }
   @media screen { .sig-clear:hover { background: #e8e8e8; } }
-
-  /* ---- Mobile sig trigger area ---- */
-  .sig-mobile-trigger {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    margin: 24px 0 8px;
-    width: 100%;
-  }
-
-  .sig-preview-area {
-    width: 100%;
-    max-width: 320px;
-    height: 80px;
-    border: 1.5px dashed #aaa;
-    border-radius: 4px;
-    position: relative;
-    background: #fafafa;
-    cursor: pointer;
-    overflow: hidden;
-  }
-
-  .sig-preview-area img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: none;
-  }
-
-  .sig-preview-area .sig-preview-hint {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    color: #999;
-    font-size: 9.5pt;
-    pointer-events: none;
-  }
-
-  .sig-preview-area .sig-preview-hint svg {
-    opacity: 0.4;
-  }
-
-  .sig-preview-area.has-sig {
-    border-color: #5cb85c;
-    background: #fff;
-  }
-
-  .sig-preview-area.has-sig .sig-preview-hint {
-    display: none;
-  }
-
-  .sig-preview-area.has-sig img {
-    display: block;
-  }
-
-  /* ===================== MOBILE SIGNATURE MODAL ===================== */
-  #sig-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: #1a1a1a;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #sig-modal.open {
-    display: flex;
-  }
-
-  .sig-modal-inner {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .sig-modal-header {
-    background: #2d2d2d;
-    color: #fff;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
-
-  .sig-modal-header span {
-    font-family: Calibri, Arial, sans-serif;
-    font-size: 13pt;
-    font-weight: bold;
-    letter-spacing: 0.02em;
-  }
-
-  .sig-modal-header .modal-brand {
-    font-family: Arial Black, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 900;
-    color: #5cb85c;
-    letter-spacing: 2px;
-  }
-
-  .sig-modal-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 16px;
-    position: relative;
-  }
-
-  .sig-modal-canvas-wrap {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  #sig-modal-canvas {
-    display: block;
-    width: 100%;
-    height: 180px;
-    cursor: crosshair;
-    touch-action: none;
-  }
-
-  .sig-modal-hint {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #bbb;
-    font-size: 10pt;
-    font-family: Calibri, Arial, sans-serif;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .sig-modal-line-label {
-    width: 100%;
-    border-top: 1.5px solid #555;
-    margin-top: 4px;
-    text-align: center;
-    padding-top: 4px;
-    color: #bbb;
-    font-size: 9pt;
-    font-family: Calibri, Arial, sans-serif;
-  }
-
-  .sig-modal-footer {
-    background: #2d2d2d;
-    display: flex;
-    gap: 10px;
-    padding: 10px 16px;
-    flex-shrink: 0;
-  }
-
-  .sig-modal-btn {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 3px;
-    font-family: Calibri, Arial, sans-serif;
-    font-size: 13pt;
-    font-weight: bold;
-    cursor: pointer;
-    letter-spacing: 0.03em;
-  }
-
+  .sig-mobile-trigger { display: none; flex-direction: column; align-items: center; margin: 24px 0 8px; width: 100%; }
+  .sig-preview-area { width: 100%; max-width: 320px; height: 80px; border: 1.5px dashed #aaa; border-radius: 4px; position: relative; background: #fafafa; cursor: pointer; overflow: hidden; }
+  .sig-preview-area img { width: 100%; height: 100%; object-fit: contain; display: none; }
+  .sig-preview-area .sig-preview-hint { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #999; font-size: 9.5pt; pointer-events: none; }
+  .sig-preview-area .sig-preview-hint svg { opacity: 0.4; }
+  .sig-preview-area.has-sig { border-color: #5cb85c; background: #fff; }
+  .sig-preview-area.has-sig .sig-preview-hint { display: none; }
+  .sig-preview-area.has-sig img { display: block; }
+  #sig-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: #1a1a1a; align-items: center; justify-content: center; }
+  #sig-modal.open { display: flex; }
+  .sig-modal-inner { width: 100%; height: 100%; display: flex; flex-direction: column; }
+  .sig-modal-header { background: #2d2d2d; color: #fff; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .sig-modal-header span { font-family: Calibri, Arial, sans-serif; font-size: 13pt; font-weight: bold; letter-spacing: 0.02em; }
+  .sig-modal-header .modal-brand { font-family: Arial Black, Arial, sans-serif; font-size: 15px; font-weight: 900; color: #5cb85c; letter-spacing: 2px; }
+  .sig-modal-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 16px; position: relative; }
+  .sig-modal-canvas-wrap { position: relative; width: 100%; height: 180px; flex-shrink: 0; background: #fff; border-radius: 4px; overflow: hidden; }
+  #sig-modal-canvas { display: block; width: 100%; height: 180px; cursor: crosshair; touch-action: none; }
+  .sig-modal-hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 10pt; font-family: Calibri, Arial, sans-serif; pointer-events: none; user-select: none; }
+  .sig-modal-line-label { width: 100%; border-top: 1.5px solid #555; margin-top: 4px; text-align: center; padding-top: 4px; color: #bbb; font-size: 9pt; font-family: Calibri, Arial, sans-serif; }
+  .sig-modal-footer { background: #2d2d2d; display: flex; gap: 10px; padding: 10px 16px; flex-shrink: 0; }
+  .sig-modal-btn { flex: 1; padding: 12px; border: none; border-radius: 3px; font-family: Calibri, Arial, sans-serif; font-size: 13pt; font-weight: bold; cursor: pointer; letter-spacing: 0.03em; }
   .sig-modal-btn.cancel { background: #444; color: #ccc; }
-  .sig-modal-btn.clear  { background: #555; color: #fff; flex: 0 0 80px; }
+  .sig-modal-btn.clear { background: #555; color: #fff; flex: 0 0 80px; }
   .sig-modal-btn.confirm { background: #5cb85c; color: #fff; }
   .sig-modal-btn.confirm:active { background: #4aa044; }
-  .sig-modal-btn.cancel:active  { background: #333; }
-
-  .replacements-title {
-    font-size: 13pt;
-    font-weight: bold;
-    text-align: center;
-    margin: 30px 0 5px;
-  }
-
-  .replacements-sub {
-    font-size: 10.5pt;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  /* ===================== PRINT STYLES ===================== */
+  .sig-modal-btn.cancel:active { background: #333; }
+  .replacements-title { font-size: 13pt; font-weight: bold; text-align: center; margin: 30px 0 5px; }
+  .replacements-sub { font-size: 10.5pt; text-align: center; margin-bottom: 20px; }
   @media print {
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      font-family: Calibri, Arial, sans-serif;
-      font-size: 10pt;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-      color-adjust: exact;
-    }
-
-    .save-bar, .sig-clear, .toast, #sig-modal,
-    .sig-mobile-trigger button, .sig-preview-area .sig-preview-hint { display: none !important; }
-
-    .page {
-      max-width: 100%;
-      width: 100%;
-      padding: 14mm 18mm 14mm;
-      margin: 0;
-      box-shadow: none;
-      page-break-after: always;
-    }
-
+    html, body { margin: 0; padding: 0; background: #fff; font-family: Calibri, Arial, sans-serif; font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; }
+    .save-bar, .sig-clear, .toast, #sig-modal, .sig-mobile-trigger button, .sig-preview-area .sig-preview-hint { display: none !important; }
+    .page { max-width: 100%; width: 100%; padding: 14mm 18mm 14mm; margin: 0; box-shadow: none; page-break-after: always; }
     .page:last-of-type { page-break-after: auto; }
-
-    .header-logo {
-      background-color: #5cb85c !important;
-      width: 100px;
-      min-height: 108px;
-    }
-
-    .field-input {
-      border-bottom: 1px solid #000 !important;
-    }
-
-    #sig-canvas {
-      max-width: 280px;
-    }
+    .header-logo { background-color: #5cb85c !important; width: 100px; min-height: 108px; }
+    .field-input { border-bottom: 1px solid #000 !important; }
+    #sig-canvas { max-width: 280px; }
   }
-
-  /* ===================== RESPONSIVE ===================== */
   @media screen and (max-width: 480px) {
     .header-logo { width: 80px; min-height: 100px; }
     .fgf-text { font-size: 24px; }
@@ -614,10 +98,9 @@
     .header-table td { font-size: 8.5pt; padding: 2px 6px; }
     .header-table td:first-child { width: 88px; }
     .field-label { min-width: 160px; font-size: 10pt; }
-    .section-heading, .sub-heading { font-size: 10.5pt; }
-    .body-text, .bullet-list li, .disc-list li, .num-para { font-size: 10pt; }
+    .section-heading { font-size: 10.5pt; }
+    .body-text, .disc-list li { font-size: 10pt; }
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
@@ -640,20 +123,13 @@
       </table>
     </div>
   </div>
-
   <p class="section-heading">Introduction</p>
   <p class="body-text"><strong>This policy describes the controls necessary to minimize information security risks affecting FGF laptops.</strong></p>
-
   <p class="body-text">All computer systems face information security risks. Laptop computers are an essential business tool but their very portability makes them particularly vulnerable to physical damage or theft. Furthermore, the fact that they are often used outside FGF's premises increases the threats from people who do not work for FGF and may not have its interests at heart.</p>
-
   <p class="body-text">Portable computers are especially vulnerable to physical damage or loss, and theft, either for resale (opportunistic thieves) or for the information they contain (industrial spies).</p>
-
   <p class="body-text">Do not forget that the impacts of such breaches include not just the replacement value of the hardware but also the value of any FGF data on them, or accessible through them. Information is a vital FGF asset. We depend very heavily on our computer systems to provide complete and accurate business information when and where we need it. The impacts of unauthorized access to or modification of, important and/or sensitive FGF data can far outweigh the cost of the equipment itself.</p>
-
   <p class="body-text">This policy refers to certain other/general information security policies, but the specific information given here is directly relevant to laptops and, in case of conflict, takes precedence over other policies.</p>
-
   <br><br>
-
   <p class="section-heading">Physical security controls for laptops</p>
   <ul class="disc-list">
     <li>The physical security of 'your' laptop is your personal responsibility so please take all reasonable precautions. Be sensible and stay alert to the risks.</li>
@@ -680,16 +156,12 @@
       </table>
     </div>
   </div>
-
   <ul class="disc-list" style="margin-top:0;">
     <li>Carry and store the laptop in a padded laptop computer bag or strong briefcase to reduce the chance of accidental damage.</li>
     <li>An employee will be responsible for the activity on the company supplied laptop assigned to him/her. If the laptop is lost or misplaced please contact the IT Help/Service Desk immediately.</li>
   </ul>
-
   <br><br>
-
   <p class="body-text"><strong>The following costs (outlined below as per model received) will be recovered from payroll for any damage, lost/stolen or laptop not returned upon termination of services</strong></p>
-
   <table class="cost-table">
     <tr><td>Standard Dell Laptops (Pro or Latitude series)<span class="dots"></span></td><td>$800</td></tr>
     <tr><td>High-end Dell Laptops (Precision series)<span class="dots"></span></td><td>$1800</td></tr>
@@ -700,14 +172,12 @@
     <tr><td>HP Laptops (EliteBook series)<span class="dots"></span></td><td>$800</td></tr>
     <tr><td>Other Laptops / Tablets<span class="dots"></span></td><td>$____</td></tr>
   </table>
-
   <br><br>
-
   <p class="section-heading">Virus protection of laptops</p>
   <ul class="disc-list">
     <li>Viruses are a major threat to FGF and laptops are particularly vulnerable if their anti-virus software is not kept up-to-date. The anti-virus software MUST be updated at least monthly. The easiest way of doing this is simply to log on to the FGF network for the automatic update process to run. If you cannot log on for some reason, contact the IT Help/Service Desk for advice on obtaining and installing anti-virus updates.</li>
     <li>Email attachments are now the number one source of computer viruses. Avoid opening any email attachment unless you were expecting to receive it from that person.</li>
-    <li>Always virus-scan any files downloaded to your computer from any source (CD/DVD, USB hard disks and memory sticks, network files, email attachments or files from the Internet). Virus scans normally happen automatically but the IT Help/Service Desk can tell you how to initiate manual scans if you wish to be certain.</li>
+    
   </ul>
 </div>
 
@@ -728,25 +198,20 @@
       </table>
     </div>
   </div>
-
   <ul class="disc-list" style="margin-top:0;">
+    <li>Always virus-scan any files downloaded to your computer from any source (CD/DVD, USB hard disks and memory sticks, network files, email attachments or files from the Internet). Virus scans normally happen automatically but the IT Help/Service Desk can tell you how to initiate manual scans if you wish to be certain.</li>
     <li>Report any security incidents (such as virus infections) promptly to the IT Help/Service Desk in order to minimize the damage.</li>
     <li>Respond immediately to any virus warning message on your computer, or if you suspect a virus (<em>e.g.</em> by unusual file activity) by contacting the IT Help/Service Desk. Do not forward any files or upload data onto the network if you suspect your PC might be infected.</li>
   </ul>
-
   <br><br>
-
   <p class="body-text"><strong>By signing where indicated below, I acknowledge that:</strong></p>
   <ol class="num-list">
     <li>I have read, discussed with management and thoroughly understand the policies outlined in this document.</li>
     <li>I agree to abide by these policies and understand that violation of any of these policies may lead to my dismissal or other disciplinary action.</li>
     <li>I have been furnished with a copy of these policies for my records.</li>
   </ol>
-
   <br><br><br><br><br>
 
-  <p class="ack-title">ACKNOWLEDGEMENT:</p>
-  <p class="ack-text">I ACKNOWLEDGE that I have REVIEWED and READ the above Company Laptop Policy.</p>
 </div>
 
 <!-- PAGE 4 -->
@@ -767,40 +232,16 @@
     </div>
   </div>
 
-  <div class="field-row">
-    <span class="field-label">TEAM MEMBER NAME:</span>
-    <input class="field-input" type="text" id="f-name" autocomplete="name">
-  </div>
-  <div class="field-row">
-    <span class="field-label">TEAM MEMBER USERNAME:</span>
-    <input class="field-input" type="text" id="f-username">
-  </div>
-  <div class="field-row">
-    <span class="field-label">COMPUTER NAME:</span>
-    <input class="field-input" type="text" id="f-computer">
-  </div>
-  <div class="field-row">
-    <span class="field-label">LAPTOP BRAND:</span>
-    <input class="field-input" type="text" id="f-brand">
-  </div>
-  <div class="field-row">
-    <span class="field-label">LAPTOP MODEL:</span>
-    <input class="field-input" type="text" id="f-model">
-  </div>
-  <div class="field-row">
-    <span class="field-label">SERIAL NUMBER:</span>
-    <input class="field-input" type="text" id="f-serial">
-  </div>
-  <div class="field-row">
-    <span class="field-label">DATE:</span>
-    <input class="field-input" type="date" id="f-date">
-  </div>
-  <div class="field-row">
-    <span class="field-label">TECHCARE AGENT NAME:</span>
-    <span class="field-static" id="agent-name"></span>
-  </div>
-
-  <!-- FIX: Desktop signature wrapper now has correct id="sig-desktop" -->
+  <p class="ack-title">ACKNOWLEDGEMENT:</p>
+  <p class="ack-text">I ACKNOWLEDGE that I have REVIEWED and READ the above Company Laptop Policy.</p>
+  <div class="field-row"><span class="field-label">TEAM MEMBER NAME:</span><input class="field-input" type="text" id="f-name" autocomplete="name"></div>
+  <div class="field-row"><span class="field-label">TEAM MEMBER USERNAME:</span><input class="field-input" type="text" id="f-username"></div>
+  <div class="field-row"><span class="field-label">COMPUTER NAME:</span><input class="field-input" type="text" id="f-computer"></div>
+  <div class="field-row"><span class="field-label">LAPTOP BRAND:</span><input class="field-input" type="text" id="f-brand"></div>
+  <div class="field-row"><span class="field-label">LAPTOP MODEL:</span><input class="field-input" type="text" id="f-model"></div>
+  <div class="field-row"><span class="field-label">SERIAL NUMBER:</span><input class="field-input" type="text" id="f-serial"></div>
+  <div class="field-row"><span class="field-label">DATE:</span><input class="field-input" type="date" id="f-date"></div>
+  <div class="field-row"><span class="field-label">TECHCARE AGENT NAME:</span><span class="field-static" id="agent-name"></span></div>
   <div class="sig-wrapper" id="sig-desktop">
     <div class="sig-canvas-container">
       <canvas id="sig-canvas"></canvas>
@@ -810,51 +251,28 @@
     <p class="sig-label">(Team Member Signature)</p>
     <button class="sig-clear" id="btn-clear">Clear Signature</button>
   </div>
-
-  <!-- FIX: Mobile signature trigger now has correct id="sig-mobile" and all required child IDs -->
   <div class="sig-mobile-trigger" id="sig-mobile">
     <div class="sig-preview-area" id="sig-preview" onclick="openSigModal()">
       <img id="sig-preview-img" src="" alt="Signature preview">
       <div class="sig-preview-hint">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-        </svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         Tap to sign
       </div>
     </div>
     <p class="sig-label">(Team Member Signature)</p>
     <button class="sig-clear" onclick="clearMobileSig()">Clear Signature</button>
   </div>
-
   <p class="replacements-title">ONLY APPLICABLE FOR REPLACEMENTS:</p>
   <p class="replacements-sub">To be filled in after receiving user's old device after deployment.</p>
-
-  <div class="field-row">
-    <span class="field-label">PREVIOUS COMPUTER NAME:</span>
-    <input class="field-input" type="text" id="f-prev-computer">
-  </div>
-  <div class="field-row">
-    <span class="field-label">PREVIOUS LAPTOP BRAND:</span>
-    <input class="field-input" type="text" id="f-prev-brand">
-  </div>
-  <div class="field-row">
-    <span class="field-label">PREVIOUS LAPTOP MODEL:</span>
-    <input class="field-input" type="text" id="f-prev-model">
-  </div>
-  <div class="field-row">
-    <span class="field-label">PREVIOUS SERIAL NUMBER:</span>
-    <input class="field-input" type="text" id="f-prev-serial">
-  </div>
+  <div class="field-row"><span class="field-label">PREVIOUS COMPUTER NAME:</span><input class="field-input" type="text" id="f-prev-computer"></div>
+  <div class="field-row"><span class="field-label">PREVIOUS LAPTOP BRAND:</span><input class="field-input" type="text" id="f-prev-brand"></div>
+  <div class="field-row"><span class="field-label">PREVIOUS LAPTOP MODEL:</span><input class="field-input" type="text" id="f-prev-model"></div>
+  <div class="field-row"><span class="field-label">PREVIOUS SERIAL NUMBER:</span><input class="field-input" type="text" id="f-prev-serial"></div>
 </div>
 
-<!-- Mobile Signature Modal -->
-<!-- FIX: Modal now has all required IDs: modal-canvas-wrap, modal-hint -->
 <div id="sig-modal">
   <div class="sig-modal-inner">
-    <div class="sig-modal-header">
-      <span class="modal-brand">FGF</span>
-      <span>Sign Here</span>
-    </div>
+    <div class="sig-modal-header"><span class="modal-brand">FGF</span><span>Sign Here</span></div>
     <div class="sig-modal-body">
       <div class="sig-modal-canvas-wrap" id="modal-canvas-wrap">
         <canvas id="sig-modal-canvas"></canvas>
@@ -864,338 +282,130 @@
     </div>
     <div class="sig-modal-footer">
       <button class="sig-modal-btn cancel" onclick="closeSigModal(false)">Cancel</button>
-      <button class="sig-modal-btn clear"  onclick="clearModalCanvas()">Clear</button>
+      <button class="sig-modal-btn clear" onclick="clearModalCanvas()">Clear</button>
       <button class="sig-modal-btn confirm" onclick="closeSigModal(true)">Done</button>
     </div>
   </div>
 </div>
 
-<!-- Sticky Save Bar -->
 <div class="save-bar">
   <button class="btn-save" id="btn-save">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-    </svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Save as PDF
   </button>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ---- FIX: Removed broken getCookie('agent_name') call that referenced
-     a non-existent #agent-name element. Agent name is filled via the
-     #f-agent text input by the user instead. ---- */
-     
-     /* ---- Agent cookie ---- */
   function getCookie(name) {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
     return match ? match[2] : '';
   }
   document.getElementById('agent-name').textContent = getCookie('agent_name').replace(/^"|"$/g, '');
 
-
   /* ---- Default date ---- */
   document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 
-  /* ===================== MOBILE DETECTION ===================== */
-  function isMobile() {
-    return ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 900;
-  }
-
-  /* FIX: setupSigUI now references the correct IDs (#sig-desktop, #sig-mobile) which exist in the HTML */
-  function setupSigUI() {
-    if (isMobile()) {
-      document.getElementById('sig-desktop').style.display = 'none';
-      document.getElementById('sig-mobile').style.display = 'flex';
-    } else {
-      document.getElementById('sig-desktop').style.display = 'flex';
-      document.getElementById('sig-mobile').style.display = 'none';
-    }
-  }
-  setupSigUI();
-  window.addEventListener('resize', setupSigUI);
-
-  /* ===================== DESKTOP INLINE CANVAS ===================== */
-  const desktopCanvas = document.getElementById('sig-canvas');
-  const desktopHint   = document.getElementById('sig-hint');
-  const dCtx          = desktopCanvas.getContext('2d');
-  let dDrawing = false, dHasSig = false;
-
-  function setupDesktopCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    const container = desktopCanvas.parentElement;
-    const w = Math.min(container.clientWidth, 320);
-    const h = 80;
-    desktopCanvas.width  = w * dpr;
-    desktopCanvas.height = h * dpr;
-    desktopCanvas.style.width  = w + 'px';
-    desktopCanvas.style.height = h + 'px';
-    dCtx.setTransform(1,0,0,1,0,0);
-    dCtx.scale(dpr, dpr);
-    dCtx.strokeStyle = '#000';
-    dCtx.lineWidth   = 1.8;
-    dCtx.lineCap     = 'round';
-    dCtx.lineJoin    = 'round';
-  }
-  setupDesktopCanvas();
-  window.addEventListener('resize', setupDesktopCanvas);
-
-  function dGetXY(e) {
-    const r     = desktopCanvas.getBoundingClientRect();
-    const touch = e.touches ? e.touches[0] : e;
-    return { x: touch.clientX - r.left, y: touch.clientY - r.top };
-  }
-
-  desktopCanvas.addEventListener('mousedown', e => {
-    dDrawing = true;
-    const p = dGetXY(e);
-    dCtx.beginPath(); dCtx.moveTo(p.x, p.y);
-    if (!dHasSig) { dHasSig = true; desktopHint.style.display = 'none'; }
-  });
-  desktopCanvas.addEventListener('mousemove', e => {
-    if (!dDrawing) return;
-    const p = dGetXY(e); dCtx.lineTo(p.x, p.y); dCtx.stroke();
-  });
-  desktopCanvas.addEventListener('mouseup',    () => dDrawing = false);
-  desktopCanvas.addEventListener('mouseleave', () => dDrawing = false);
-  desktopCanvas.addEventListener('touchstart', e => {
-    e.preventDefault(); dDrawing = true;
-    const p = dGetXY(e); dCtx.beginPath(); dCtx.moveTo(p.x, p.y);
-    if (!dHasSig) { dHasSig = true; desktopHint.style.display = 'none'; }
-  }, { passive: false });
-  desktopCanvas.addEventListener('touchmove', e => {
-    e.preventDefault(); if (!dDrawing) return;
-    const p = dGetXY(e); dCtx.lineTo(p.x, p.y); dCtx.stroke();
-  }, { passive: false });
-  desktopCanvas.addEventListener('touchend', () => dDrawing = false);
-
-  document.getElementById('btn-clear').addEventListener('click', () => {
-    dCtx.clearRect(0, 0, desktopCanvas.width, desktopCanvas.height);
-    dHasSig = false;
-    desktopHint.style.display = '';
-  });
-
-  /* ===================== MOBILE MODAL CANVAS ===================== */
-  const modal       = document.getElementById('sig-modal');
-  const modalCanvas = document.getElementById('sig-modal-canvas');
-  const modalHint   = document.getElementById('modal-hint');
-  const mCtx        = modalCanvas.getContext('2d');
-  let mDrawing = false, mHasSig = false;
-  let mobileSigDataUrl = null;
-
-  function setupModalCanvas() {
-    /* FIX: now references the correct id="modal-canvas-wrap" which exists in the HTML */
-    const container = document.getElementById('modal-canvas-wrap');
-    const dpr = window.devicePixelRatio || 1;
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    modalCanvas.width  = w * dpr;
-    modalCanvas.height = h * dpr;
-    modalCanvas.style.width  = w + 'px';
-    modalCanvas.style.height = h + 'px';
-    mCtx.setTransform(1, 0, 0, 1, 0, 0);
-    mCtx.scale(dpr, dpr);
-    mCtx.strokeStyle = '#1a1a1a';
-    mCtx.lineWidth   = 2.5;
-    mCtx.lineCap     = 'round';
-    mCtx.lineJoin    = 'round';
-  }
-
-  function mGetXY(e) {
-    const touch = e.touches ? e.touches[0] : e;
-    const rect  = modalCanvas.getBoundingClientRect();
-    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
-  }
-
-  modalCanvas.addEventListener('mousedown', e => {
-    mDrawing = true;
-    const p = mGetXY(e); mCtx.beginPath(); mCtx.moveTo(p.x, p.y);
-    if (!mHasSig) { mHasSig = true; modalHint.style.display = 'none'; }
-  });
-  modalCanvas.addEventListener('mousemove', e => {
-    if (!mDrawing) return;
-    const p = mGetXY(e); mCtx.lineTo(p.x, p.y); mCtx.stroke();
-  });
-  modalCanvas.addEventListener('mouseup',    () => mDrawing = false);
-  modalCanvas.addEventListener('mouseleave', () => mDrawing = false);
-  modalCanvas.addEventListener('touchstart', e => {
-    e.preventDefault(); mDrawing = true;
-    const p = mGetXY(e); mCtx.beginPath(); mCtx.moveTo(p.x, p.y);
-    if (!mHasSig) { mHasSig = true; modalHint.style.display = 'none'; }
-  }, { passive: false });
-  modalCanvas.addEventListener('touchmove', e => {
-    e.preventDefault(); if (!mDrawing) return;
-    const p = mGetXY(e); mCtx.lineTo(p.x, p.y); mCtx.stroke();
-  }, { passive: false });
-  modalCanvas.addEventListener('touchend',    () => mDrawing = false);
-  modalCanvas.addEventListener('touchcancel', () => mDrawing = false);
-
-  function clearModalCanvas() {
-    mCtx.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
-    mHasSig = false;
-    modalHint.style.display = '';
-  }
-
-  function openSigModal() {
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => {
-      setupModalCanvas();
-      if (mobileSigDataUrl) {
-        const img = new Image();
-        img.onload = () => {
-          const dpr = window.devicePixelRatio || 1;
-          mCtx.drawImage(img, 0, 0, modalCanvas.width / dpr, modalCanvas.height / dpr);
-          mHasSig = true;
-          modalHint.style.display = 'none';
-        };
-        img.src = mobileSigDataUrl;
-      }
-    }, 0)));
-  }
-
-  function closeSigModal(confirm) {
-    if (confirm) {
-      if (!mHasSig) {
-        modalCanvas.style.outline = '2px solid #e74c3c';
-        setTimeout(() => modalCanvas.style.outline = '', 1800);
-        return;
-      }
-      mobileSigDataUrl = modalCanvas.toDataURL('image/png');
-      const preview    = document.getElementById('sig-preview');
-      const previewImg = document.getElementById('sig-preview-img');
-      previewImg.src = mobileSigDataUrl;
-      preview.classList.add('has-sig');
-    }
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  function clearMobileSig() {
-    mobileSigDataUrl = null;
-    const preview    = document.getElementById('sig-preview');
-    const previewImg = document.getElementById('sig-preview-img');
-    previewImg.src = '';
-    preview.classList.remove('has-sig');
-    clearModalCanvas();
-  }
-
-  /* ---- Unified helpers ---- */
-  function getHasSig() {
-    return isMobile() ? !!mobileSigDataUrl : dHasSig;
-  }
-
-  function getSigDataUrl() {
-    return isMobile() ? mobileSigDataUrl : desktopCanvas.toDataURL('image/png');
-  }
-
-  /* ---- Toast helper ---- */
-  function showToast(msg, isError) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast' + (isError ? '' : ' success') + ' show';
-    setTimeout(() => t.className = 'toast', 2800);
-  }
-
-  /* ===================== SAVE AS PDF ===================== */
-  document.getElementById('btn-save').addEventListener('click', async () => {
-    const name        = document.getElementById('f-name').value.trim();
-    const laptop_name = document.getElementById('f-computer').value.trim();
-
-    if (!name) {
-      const el = document.getElementById('f-name');
-      el.focus();
-      el.style.borderBottomColor = '#c0392b';
-      setTimeout(() => el.style.borderBottomColor = '', 2500);
-      showToast('⚠ Please enter the Team Member Name before saving.', true);
-      return;
-    }
-
-    if (!getHasSig()) {
-      if (isMobile()) {
-        const preview = document.getElementById('sig-preview');
-        preview.style.borderColor = '#c0392b';
-        setTimeout(() => preview.style.borderColor = '', 2500);
-      } else {
-        desktopCanvas.style.outline = '2px solid #c0392b';
-        setTimeout(() => desktopCanvas.style.outline = '', 2500);
-      }
-      showToast('⚠ Please draw the Team Member Signature before saving.', true);
-      return;
-    }
-
-    const btn = document.getElementById('btn-save');
-    btn.disabled = true;
-    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0"/></svg>&nbsp;Generating PDF…`;
-
-    const sigDataUrl = getSigDataUrl();
-    const clone = document.documentElement.cloneNode(true);
-
-    clone.querySelectorAll('.save-bar, .toast, script, #sig-modal, .sig-clear, .sig-mobile-trigger button').forEach(el => el.remove());
-
-    clone.querySelectorAll('.field-input').forEach(input => {
-      const span = document.createElement('span');
-      span.className = 'field-input';
-      span.style.cssText = 'display:inline-block;border-bottom:1.5px solid #000;min-width:120px;padding:2px 4px;font-family:Calibri,Arial,sans-serif;font-size:10.5pt;';
-      if (input.type === 'date' && input.value) {
-        const d = new Date(input.value + 'T00:00:00');
-        span.textContent = d.toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' });
-      } else {
-        span.textContent = input.value || '';
-      }
-      input.parentNode.replaceChild(span, input);
-    });
-
-    const cloneDesktopCanvas = clone.querySelector('#sig-canvas');
-    const cloneMobilePreview = clone.querySelector('#sig-preview');
-
-    const sigImg = document.createElement('img');
-    sigImg.src = sigDataUrl;
-    sigImg.style.cssText = 'display:block;width:100%;max-width:320px;height:80px;object-fit:contain;';
-
-    if (cloneDesktopCanvas) cloneDesktopCanvas.parentNode.replaceChild(sigImg, cloneDesktopCanvas);
-    if (cloneMobilePreview) {
-      const mImg = document.createElement('img');
-      mImg.src = sigDataUrl;
-      mImg.style.cssText = 'display:block;width:100%;max-width:320px;height:80px;object-fit:contain;border-radius:4px;';
-      cloneMobilePreview.parentNode.replaceChild(mImg, cloneMobilePreview);
-    }
-
-    ['#sig-hint', '#modal-hint', '.sig-clear', '.sig-preview-hint'].forEach(sel => {
-      clone.querySelectorAll(sel).forEach(el => el.remove());
-    });
-
-    const htmlString = '<!DOCTYPE html>\n' + clone.outerHTML;
-
+  /* ---- Auto-fill from roster search (saved by dashboard) ---- */
+  (function prefillFromRoster() {
+    const raw = sessionStorage.getItem('prefill_laptop');
+    if (!raw) return;
     try {
-      const response = await fetch('/laptop-submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, laptop_name, html: htmlString })
-      });
+      const m = JSON.parse(raw);
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val && val !== 'None') el.value = String(val).trim();
+      };
+      set('f-name',          m.Team_Member_Name);
+      set('f-username',      m.Team_Member_Usern);
+      set('f-computer',      m.Computer_Name);
+      set('f-brand',         m.Laptop_Brand);
+      set('f-model',         m.Laptop_model);
+      set('f-serial',        m.Serial_Number);
+      set('f-prev-computer', m.Previous_Computer_Name);
+      set('f-prev-brand',    m.Previous_laptop_brand);
+      set('f-prev-model',    m.Previous_Laptop_Model);
+      set('f-prev-serial',   m.Previous_Serial_Number);
 
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#2e7d32;color:#fff;padding:10px 22px;border-radius:6px;font-size:13px;font-family:Calibri,Arial,sans-serif;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
+      banner.textContent = '\u2713 Fields filled from roster: ' + (m.Team_Member_Name || '');
+      document.body.appendChild(banner);
+      setTimeout(() => banner.remove(), 3500);
+    } catch(e) { console.warn('prefill error', e); }
+  })();
+
+  function isMobile() { return ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 900; }
+  function setupSigUI() {
+    if (isMobile()) { document.getElementById('sig-desktop').style.display = 'none'; document.getElementById('sig-mobile').style.display = 'flex'; }
+    else { document.getElementById('sig-desktop').style.display = 'flex'; document.getElementById('sig-mobile').style.display = 'none'; }
+  }
+  setupSigUI(); window.addEventListener('resize', setupSigUI);
+  const desktopCanvas = document.getElementById('sig-canvas');
+  const desktopHint = document.getElementById('sig-hint');
+  const dCtx = desktopCanvas.getContext('2d');
+  let dDrawing = false, dHasSig = false;
+  function setupDesktopCanvas() {
+    const dpr = window.devicePixelRatio || 1; const container = desktopCanvas.parentElement;
+    const w = Math.min(container.clientWidth, 320); const h = 80;
+    desktopCanvas.width = w * dpr; desktopCanvas.height = h * dpr;
+    desktopCanvas.style.width = w + 'px'; desktopCanvas.style.height = h + 'px';
+    dCtx.setTransform(1,0,0,1,0,0); dCtx.scale(dpr, dpr);
+    dCtx.strokeStyle = '#000'; dCtx.lineWidth = 1.8; dCtx.lineCap = 'round'; dCtx.lineJoin = 'round';
+  }
+  setupDesktopCanvas(); window.addEventListener('resize', setupDesktopCanvas);
+  function dGetXY(e) { const r = desktopCanvas.getBoundingClientRect(); const touch = e.touches ? e.touches[0] : e; return { x: touch.clientX - r.left, y: touch.clientY - r.top }; }
+  desktopCanvas.addEventListener('mousedown', e => { dDrawing = true; const p = dGetXY(e); dCtx.beginPath(); dCtx.moveTo(p.x, p.y); if (!dHasSig) { dHasSig = true; desktopHint.style.display = 'none'; } });
+  desktopCanvas.addEventListener('mousemove', e => { if (!dDrawing) return; const p = dGetXY(e); dCtx.lineTo(p.x, p.y); dCtx.stroke(); });
+  desktopCanvas.addEventListener('mouseup', () => dDrawing = false);
+  desktopCanvas.addEventListener('mouseleave', () => dDrawing = false);
+  desktopCanvas.addEventListener('touchstart', e => { e.preventDefault(); dDrawing = true; const p = dGetXY(e); dCtx.beginPath(); dCtx.moveTo(p.x, p.y); if (!dHasSig) { dHasSig = true; desktopHint.style.display = 'none'; } }, { passive: false });
+  desktopCanvas.addEventListener('touchmove', e => { e.preventDefault(); if (!dDrawing) return; const p = dGetXY(e); dCtx.lineTo(p.x, p.y); dCtx.stroke(); }, { passive: false });
+  desktopCanvas.addEventListener('touchend', () => dDrawing = false);
+  document.getElementById('btn-clear').addEventListener('click', () => { dCtx.clearRect(0, 0, desktopCanvas.width, desktopCanvas.height); dHasSig = false; desktopHint.style.display = ''; });
+  const modal = document.getElementById('sig-modal'); const modalCanvas = document.getElementById('sig-modal-canvas'); const modalHint = document.getElementById('modal-hint'); const mCtx = modalCanvas.getContext('2d');
+  let mDrawing = false, mHasSig = false, mobileSigDataUrl = null;
+  function setupModalCanvas() { const container = document.getElementById('modal-canvas-wrap'); const dpr = window.devicePixelRatio || 1; const w = container.clientWidth; const h = container.clientHeight; modalCanvas.width = w * dpr; modalCanvas.height = h * dpr; modalCanvas.style.width = w + 'px'; modalCanvas.style.height = h + 'px'; mCtx.setTransform(1,0,0,1,0,0); mCtx.scale(dpr, dpr); mCtx.strokeStyle = '#1a1a1a'; mCtx.lineWidth = 2.5; mCtx.lineCap = 'round'; mCtx.lineJoin = 'round'; }
+  function mGetXY(e) { const touch = e.touches ? e.touches[0] : e; const rect = modalCanvas.getBoundingClientRect(); return { x: touch.clientX - rect.left, y: touch.clientY - rect.top }; }
+  modalCanvas.addEventListener('mousedown', e => { mDrawing = true; const p = mGetXY(e); mCtx.beginPath(); mCtx.moveTo(p.x, p.y); if (!mHasSig) { mHasSig = true; modalHint.style.display = 'none'; } });
+  modalCanvas.addEventListener('mousemove', e => { if (!mDrawing) return; const p = mGetXY(e); mCtx.lineTo(p.x, p.y); mCtx.stroke(); });
+  modalCanvas.addEventListener('mouseup', () => mDrawing = false);
+  modalCanvas.addEventListener('mouseleave', () => mDrawing = false);
+  modalCanvas.addEventListener('touchstart', e => { e.preventDefault(); mDrawing = true; const p = mGetXY(e); mCtx.beginPath(); mCtx.moveTo(p.x, p.y); if (!mHasSig) { mHasSig = true; modalHint.style.display = 'none'; } }, { passive: false });
+  modalCanvas.addEventListener('touchmove', e => { e.preventDefault(); if (!mDrawing) return; const p = mGetXY(e); mCtx.lineTo(p.x, p.y); mCtx.stroke(); }, { passive: false });
+  modalCanvas.addEventListener('touchend', () => mDrawing = false);
+  modalCanvas.addEventListener('touchcancel', () => mDrawing = false);
+  function clearModalCanvas() { mCtx.clearRect(0, 0, modalCanvas.width, modalCanvas.height); mHasSig = false; modalHint.style.display = ''; }
+  function openSigModal() { modal.classList.add('open'); document.body.style.overflow = 'hidden'; requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => { setupModalCanvas(); if (mobileSigDataUrl) { const img = new Image(); img.onload = () => { const dpr = window.devicePixelRatio || 1; mCtx.drawImage(img, 0, 0, modalCanvas.width / dpr, modalCanvas.height / dpr); mHasSig = true; modalHint.style.display = 'none'; }; img.src = mobileSigDataUrl; } }, 0))); }
+  function closeSigModal(confirm) { if (confirm) { if (!mHasSig) { modalCanvas.style.outline = '2px solid #e74c3c'; setTimeout(() => modalCanvas.style.outline = '', 1800); return; } mobileSigDataUrl = modalCanvas.toDataURL('image/png'); const preview = document.getElementById('sig-preview'); const previewImg = document.getElementById('sig-preview-img'); previewImg.src = mobileSigDataUrl; preview.classList.add('has-sig'); } modal.classList.remove('open'); document.body.style.overflow = ''; }
+  function clearMobileSig() { mobileSigDataUrl = null; const preview = document.getElementById('sig-preview'); const previewImg = document.getElementById('sig-preview-img'); previewImg.src = ''; preview.classList.remove('has-sig'); clearModalCanvas(); }
+  function getHasSig() { return isMobile() ? !!mobileSigDataUrl : dHasSig; }
+  function getSigDataUrl() { return isMobile() ? mobileSigDataUrl : desktopCanvas.toDataURL('image/png'); }
+  function showToast(msg, isError) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast' + (isError ? '' : ' success') + ' show'; setTimeout(() => t.className = 'toast', 2800); }
+  document.getElementById('btn-save').addEventListener('click', async () => {
+    const name = document.getElementById('f-name').value.trim();
+    const laptop_name = document.getElementById('f-computer').value.trim();
+    if (!name) { const el = document.getElementById('f-name'); el.focus(); el.style.borderBottomColor = '#c0392b'; setTimeout(() => el.style.borderBottomColor = '', 2500); showToast('⚠ Please enter the Team Member Name before saving.', true); return; }
+    if (!getHasSig()) { if (isMobile()) { const preview = document.getElementById('sig-preview'); preview.style.borderColor = '#c0392b'; setTimeout(() => preview.style.borderColor = '', 2500); } else { desktopCanvas.style.outline = '2px solid #c0392b'; setTimeout(() => desktopCanvas.style.outline = '', 2500); } showToast('⚠ Please draw the Team Member Signature before saving.', true); return; }
+    const btn = document.getElementById('btn-save'); btn.disabled = true;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0"/></svg>&nbsp;Generating PDF\u2026';
+    const sigDataUrl = getSigDataUrl(); const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('.save-bar, .toast, script, #sig-modal, .sig-clear, .sig-mobile-trigger button').forEach(el => el.remove());
+    clone.querySelectorAll('.field-input').forEach(input => { const span = document.createElement('span'); span.className = 'field-input'; span.style.cssText = 'display:inline-block;border-bottom:1.5px solid #000;min-width:120px;padding:2px 4px;font-family:Calibri,Arial,sans-serif;font-size:10.5pt;'; if (input.type === 'date' && input.value) { const d = new Date(input.value + 'T00:00:00'); span.textContent = d.toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' }); } else { span.textContent = input.value || ''; } input.parentNode.replaceChild(span, input); });
+    const cloneDesktopCanvas = clone.querySelector('#sig-canvas'); const cloneMobilePreview = clone.querySelector('#sig-preview');
+    const sigImg = document.createElement('img'); sigImg.src = sigDataUrl; sigImg.style.cssText = 'display:block;width:100%;max-width:320px;height:80px;object-fit:contain;';
+    if (cloneDesktopCanvas) cloneDesktopCanvas.parentNode.replaceChild(sigImg, cloneDesktopCanvas);
+    if (cloneMobilePreview) { const mImg = document.createElement('img'); mImg.src = sigDataUrl; mImg.style.cssText = 'display:block;width:100%;max-width:320px;height:80px;object-fit:contain;border-radius:4px;'; cloneMobilePreview.parentNode.replaceChild(mImg, cloneMobilePreview); }
+    ['#sig-hint', '#modal-hint', '.sig-clear', '.sig-preview-hint'].forEach(sel => { clone.querySelectorAll(sel).forEach(el => el.remove()); });
+    const htmlString = '<!DOCTYPE html>\n' + clone.outerHTML;
+    try {
+      const response = await fetch('/laptop-submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, laptop_name, html: htmlString }) });
       if (!response.ok) throw new Error('Server returned ' + response.status);
       const result = await response.json();
-
-      if (result.status === 'success') {
-        const link = document.createElement('a');
-        link.href = '/download?file=' + encodeURIComponent(result.file);
-        link.download = name.replace(/\s+/g, '_') + '_laptop_policy.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        showToast('✓ PDF downloaded successfully!', false);
-      } else {
-        throw new Error('Unexpected server response');
-      }
-    } catch (err) {
-      console.error('PDF generation error:', err);
-      showToast('⚠ Could not generate PDF. Is the server running?', true);
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Save as PDF`;
-    }
+      if (result.status === 'success') { const link = document.createElement('a'); link.href = '/download?file=' + encodeURIComponent(result.file); link.download = name.replace(/\s+/g, '_') + '_laptop_policy.pdf'; document.body.appendChild(link); link.click(); document.body.removeChild(link); showToast('\u2713 PDF downloaded successfully!', false); }
+      else { throw new Error('Unexpected server response'); }
+    } catch (err) { console.error('PDF generation error:', err); showToast('\u26a0 Could not generate PDF. Is the server running?', true); }
+    finally { btn.disabled = false; btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Save as PDF'; }
   });
 </script>
 </body>
